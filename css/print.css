@@ -1,0 +1,91 @@
+/**
+ * ScopeLock Print Stylesheet
+ * Optimized for crisp A4 / Letter legal document generation.
+ */
+
+@media print {
+  @page {
+    margin: 1.8cm;
+    size: auto;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Suppress all Application UI and controls */
+  .site-header,
+  .site-footer,
+  .studio-sidebar,
+  .btn,
+  button,
+  .toast-container,
+  .modal-backdrop,
+  .hero-wrapper,
+  .sandbox-card,
+  #risk-auditor-widget,
+  #change-orders-container,
+  .workspace-card:not(#document-preview-card),
+  .card-header button,
+  .nav-menu,
+  .mobile-menu-btn,
+  .sidebar-heading {
+    display: none !important;
+  }
+
+  /* Force Document preview display */
+  .view-panel {
+    display: none !important;
+  }
+
+  #view-studio {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .studio-layout {
+    display: block !important;
+  }
+
+  .workspace-card#document-preview-card {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .paper-document {
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
+    color: #000000 !important;
+  }
+
+  .paper-document * {
+    color: #000000 !important;
+  }
+
+  .doc-legal-table th {
+    background: #e2e8f0 !important;
+    color: #000000 !important;
+    border: 1px solid #94a3b8 !important;
+  }
+
+  .doc-legal-table td {
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .doc-section-block {
+    page-break-inside: avoid;
+  }
+
+  .doc-signatures-grid {
+    page-break-inside: avoid;
+    margin-top: 50px !important;
+  }
+}

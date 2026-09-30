@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScopeLock — The Professional Scope-Control Engine</title>
+  <meta name="description" content="Turn vague project scope into explicit deliverables, enforceable boundaries, risk visibility, and paid change orders for independent consultants, engineers, and boutique agencies." />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ScopeLock — The Professional Scope-Control Engine" />
+  <meta property="og:description" content="Control the scope. Protect the margin. The contract-grade Statement of Work and Change-Order engine." />
+  <meta name="theme-color" content="#090a0f" />
+
+  <!-- Modular CSS Architecture -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/print.css" />
+</head>
+<body>
+
+  <!-- Site Header & Global Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#home" class="brand-logo" onclick="ScopeLockRouter.navigate('home'); return false;">
+        <div class="brand-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>ScopeLock</span>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link" data-tab="home">Product</a>
+        <a href="#studio" class="nav-link active" data-tab="studio">Scope Studio</a>
+        <a href="#clauses" class="nav-link" data-tab="clauses">Clause Library</a>
+        <a href="#calculator" class="nav-link" data-tab="calculator">Leakage Calculator</a>
+        <a href="#client-portal" class="nav-link" data-tab="client-portal">Client Portal</a>
+        <a href="#faq" class="nav-link" data-tab="faq">Standards & FAQ</a>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="ScopeLockRouter.navigate('client-portal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Client View
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="ScopeLockRouter.navigate('studio')">
+          Launch Studio
+        </button>
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Router Container -->
+  <main class="site-main">
+
+    <!-- ====================================================================
+         VIEW 1: HOME / PRODUCT SHOWCASE & RISK SANDBOX
+         ==================================================================== -->
+    <section id="view-home" class="view-panel">
+      <div class="container">
+        
+        <!-- Hero Section -->
+        <div class="hero-wrapper">
+          <div class="hero-tag">
+            <span class="badge badge-brand">Scope Governance</span>
+            <span>Contract-grade architecture for modern independents</span>
+          </div>
+
+          <h1 class="hero-headline">CONTROL THE SCOPE.<br />PROTECT THE MARGIN.</h1>
+          <p class="hero-copy">
+            ScopeLock turns vague project scope into explicit deliverables, enforceable revision limits, risk visibility, and paid change orders. Designed for senior consultants, developers, and boutique agencies.
+          </p>
+
+          <div class="hero-cta-bar">
+            <button type="button" class="btn btn-primary btn-lg" onclick="ScopeLockRouter.navigate('studio')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              Build Your First SOW
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="document.getElementById('live-risk-sandbox').scrollIntoView({ behavior: 'smooth' });">
+              Explore Risk Sandbox ↓
+            </button>
+          </div>
+
+          <!-- Hero Live Interactive Risk Sandbox -->
+          <div class="sandbox-card" id="live-risk-sandbox">
+            <div class="sandbox-top">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #fb7185;"></span>
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #fbbf24;"></span>
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #34d399;"></span>
+                <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">live-scope-risk-sandbox.ts</span>
+              </div>
+              <div id="sandbox-status">
+                <span class="badge badge-danger">CRITICAL EXPOSURE</span>
+              </div>
+            </div>
+
+            <div class="sandbox-grid">
+              <!-- Left: Interactive Controls -->
+              <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Simulate Contract Vulnerabilities</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+                  Toggle terms below to see how commercial ambiguity creates financial exposure:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-unlimited-rev" checked style="accent-color: var(--color-danger);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">Unlimited Revisions ("Until Satisfied")</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Leaves milestone acceptance to subjective whims</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-net-terms" style="accent-color: var(--color-brand);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">Enforce Net-7 Payment Terms (vs Net-60)</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Halts active production if invoices are unpaid</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-exclusions" style="accent-color: var(--color-brand);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">Define Explicit Out-of-Scope Exclusions</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Lists third-party licenses, cloud hosting, migrations</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-ip-shield" style="accent-color: var(--color-brand);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">IP Transfer Contingent on 100% Cleared Payment</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Retains full copyright until all balances clear</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Right: Real-Time Gauge Analysis -->
+              <div style="display: flex; flex-direction: column; justify-content: space-between; background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 24px;">
+                <div>
+                  <div style="font-size: 0.76rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.05em;">ESTIMATED VULNERABILITY INDEX</div>
+                  <div style="display: flex; align-items: baseline; gap: 4px; margin-top: 6px;">
+                    <span id="sandbox-score" class="risk-num" style="color: var(--color-danger); font-size: 3.5rem; font-family: var(--font-mono); font-weight: 800;">25</span>
+                    <span style="font-size: 1.2rem; color: var(--text-muted); font-family: var(--font-mono);">/100</span>
+                  </div>
+                </div>
+
+                <div style="padding: 16px 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); margin: 16px 0;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">Estimated Revenue Leakage:</span>
+                    <strong id="sandbox-leakage" style="color: var(--color-danger); font-family: var(--font-mono); font-size: 1.1rem;">$11,400</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">Client Turnaround Delay Exposure:</span>
+                    <strong style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.95rem;">Unbounded</strong>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="ScopeLockRouter.navigate('studio')">
+                  Load Protected SOW in Studio →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 Visual Storytelling Sections -->
+        
+        <!-- Section 1: The Scope Creep Problem -->
+        <div style="padding: var(--space-3xl) 0; border-top: 1px solid var(--border-subtle);">
+          <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+            <span class="badge badge-danger" style="margin-bottom: 8px;">The Hidden Tax</span>
+            <h2>Why Boutique Teams Bleed Margin</h2>
+            <p>Scope creep is rarely malicious. It begins with informal requests on Slack: "Can we just tweak this one thing?" Without explicit contractual boundaries, friendly accommodation turns into uncompensated labor.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+            <div class="card">
+              <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-danger);">Uncapped Revisions</h3>
+              <p style="font-size: 0.86rem;">Clients treat feedback as open-ended workshops rather than structured milestone sign-offs, causing project timelines to double.</p>
+            </div>
+            <div class="card">
+              <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-warning);">Ghosting & Dormancy</h3>
+              <p style="font-size: 0.86rem;">Clients pause responses for 4 weeks then return demanding immediate rush delivery when your calendar is completely booked.</p>
+            </div>
+            <div class="card">
+              <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: #38bdf8;">Unprotected IP Rights</h3>
+              <p style="font-size: 0.86rem;">Clients take staging code, Figma files, or vector logos to a cheaper subcontractor before paying the final 25% milestone invoice.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: How ScopeLock Works -->
+        <div style="padding: var(--space-3xl) 0; border-top: 1px solid var(--border-subtle);">
+          <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+            <span class="badge badge-brand" style="margin-bottom: 8px;">The 4-Step Architecture</span>
+            <h2>How ScopeLock Enforces Protection</h2>
+            <p>From initial scope drafting to final execution and change-order addenda.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md);">
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 01</span>
+              <h4 style="margin-bottom: 6px;">Deliverables Matrix</h4>
+              <p style="font-size: 0.82rem;">Define line items, revision caps, review SLAs, and explicit out-of-scope exclusions.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 02</span>
+              <h4 style="margin-bottom: 6px;">Risk Audit Engine</h4>
+              <p style="font-size: 0.82rem;">Rules engine scores contract safety and applies protective clauses to eliminate loopholes.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 03</span>
+              <h4 style="margin-bottom: 6px;">Client Verification</h4>
+              <p style="font-size: 0.82rem;">Client reviews explicit deliverables and completes electronic acknowledgment.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 04</span>
+              <h4 style="margin-bottom: 6px;">Change Orders</h4>
+              <p style="font-size: 0.82rem;">Turn future client requests into formal, paid addenda with timeline adjustments.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 2: SCOPE STUDIO (WORKSTATION)
+         ==================================================================== -->
+    <section id="view-studio" class="view-panel active">
+      <div class="container">
+        
+        
+        <!-- Studio Workflow Stepper -->
+        <nav class="workflow-stepper" aria-label="Workstation Steps">
+          <a href="#setup" class="step-item active" onclick="document.querySelector('.studio-sidebar').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">1</span>
+            <span>Project Setup</span>
+          </a>
+          <a href="#deliverables" class="step-item" onclick="document.getElementById('deliverables-matrix-tbody').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">2</span>
+            <span>Deliverables Matrix</span>
+          </a>
+          <a href="#risk" class="step-item" onclick="document.getElementById('risk-auditor-widget').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">3</span>
+            <span>Risk Auditor</span>
+          </a>
+          <a href="#clauses" class="step-item" onclick="document.getElementById('studio-clauses-list').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">4</span>
+            <span>Protective Clauses</span>
+          </a>
+          <a href="#change-orders" class="step-item" onclick="document.getElementById('change-orders-container').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">5</span>
+            <span>Change Orders</span>
+          </a>
+          <a href="#sow-doc" class="step-item" onclick="document.getElementById('document-preview-card').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">6</span>
+            <span>Statement of Work</span>
+          </a>
+          <a href="#client-portal" class="step-item" onclick="ScopeLockRouter.navigate('client-portal'); return false;">
+            <span class="step-num">7</span>
+            <span>Client Sign-Off</span>
+          </a>
+        </nav>
+
+        <div class="studio-layout">
+          <!-- Sidebar: Setup & Presets -->
+          <aside class="studio-sidebar">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <span style="font-size: 0.82rem; font-weight: 750; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">INDUSTRY PRESETS</span>
+              <span class="badge badge-brand">Instant Setup</span>
+            </div>
+
+            <!-- Preset Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;">
+              <button type="button" class="btn btn-secondary preset-btn active" data-preset="web-dev" style="justify-content: flex-start;">
+                ⚡ Full-Stack Web App ($9,500)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="ui-ux-sprint" style="justify-content: flex-start;">
+                🎨 SaaS UI/UX Sprint ($6,500)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="brand-identity" style="justify-content: flex-start;">
+                💎 Brand Identity ($5,400)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="mobile-app" style="justify-content: flex-start;">
+                📱 Mobile App MVP ($12,000)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="consulting" style="justify-content: flex-start;">
+                🧠 Technical Advisory ($4,800)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="custom" style="justify-content: flex-start;">
+                📝 Custom Blank SOW
+              </button>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 750; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 14px;">
+              PROJECT SPECIFICATIONS
+            </div>
+
+            <div class="form-group">
+              <label for="input-proj-name">Project Title</label>
+              <input type="text" id="input-proj-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-client-name">Client Organization</label>
+              <input type="text" id="input-client-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-client-email">Client Contact Email</label>
+              <input type="email" id="input-client-email" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-studio-name">Service Provider / Studio</label>
+              <input type="text" id="input-studio-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-studio-email">Provider Email</label>
+              <input type="email" id="input-studio-email" class="form-control" />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label for="select-currency">Currency</label>
+                <select id="select-currency" class="form-control">
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                  <option value="INR">INR (₹)</option>
+                  <option value="CAD">CAD ($)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="input-total-fee">Agreed Fee</label>
+                <input type="number" id="input-total-fee" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-hourly-rate">Out-of-Scope Hourly Rate</label>
+              <div class="input-with-suffix">
+                <input type="number" id="input-hourly-rate" class="form-control" />
+                <span class="input-suffix">/hour</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label for="input-start-date">Start Date</label>
+                <input type="date" id="input-start-date" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="input-end-date">End Target</label>
+                <input type="date" id="input-end-date" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-payment-terms">Payment Terms</label>
+              <input type="text" id="input-payment-terms" class="form-control" />
+            </div>
+
+            <!-- Export / Backup Actions -->
+            <div style="display: flex; gap: 6px; margin-top: 20px;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-export-json" style="flex: 1;">
+                Export JSON
+              </button>
+              <label class="btn btn-secondary btn-sm" style="flex: 1; cursor: pointer; text-align: center;">
+                Import JSON
+                <input type="file" id="input-import-json" accept=".json" style="display: none;" />
+              </label>
+            </div>
+          </aside>
+
+          <!-- Main Studio Panel -->
+          <div class="studio-main-panel">
+            
+            <!-- Real-Time Risk Auditor Widget -->
+            <div id="risk-auditor-widget">
+              <!-- Rendered via js/ui.js -->
+            </div>
+
+            <!-- Deliverables Matrix Table -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Deliverables Matrix & Scope Boundaries
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Itemize specifications, assign explicit revision caps, review SLAs, and define out-of-scope exclusions.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-add-deliverable">
+                  + Add Deliverable
+                </button>
+              </div>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Deliverable</th>
+                      <th>Specifications</th>
+                      <th>Revisions</th>
+                      <th>Review SLA</th>
+                      <th>Exclusions</th>
+                      <th style="text-align: right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deliverables-matrix-tbody">
+                    <!-- Rendered via js/ui.js -->
+                  </tbody>
+                </table>
+              </div>
+              <div id="matrix-summary-stats" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; font-size: 0.8rem; color: var(--text-muted); padding-top: 10px;"></div>
+            </div>
+
+            <!-- Milestone Invoicing Schedule -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    Milestone Invoicing Schedule
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Tie cash release to verifiable stage completions rather than calendar dates.
+                  </p>
+                </div>
+              </div>
+              <div id="milestones-container">
+                <!-- Rendered via js/ui.js -->
+              </div>
+            </div>
+
+            <!-- Enforceable Protective Clauses -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Protective Enforceability Addenda
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Select drafted provisions to append to this Statement of Work.
+                  </p>
+                </div>
+              </div>
+              <div id="studio-clauses-list">
+                <!-- Rendered via js/ui.js -->
+              </div>
+            </div>
+
+            <!-- Dedicated Change Order Workflow Engine -->
+            <div class="card" id="change-orders-container">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Change Order Workflow Engine
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Transform out-of-scope client requests into formal, paid project addenda with schedule adjustments.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Issue Change Order Form -->
+              <form id="co-create-form" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px;">
+                <h4 style="font-size: 0.92rem; margin-bottom: 12px; color: var(--color-brand);">Issue Scope Modification Addendum</h4>
+                <div class="form-group">
+                  <label for="co-input-title">Modification Title / Requested Feature</label>
+                  <input type="text" id="co-input-title" class="form-control" placeholder="e.g. Add Organization Multi-Tenancy & Workspace Switching" required />
+                </div>
+                <div class="form-group">
+                  <label for="co-input-reason">Client Context & Technical Scope Justification</label>
+                  <textarea id="co-input-reason" class="form-control" rows="2" placeholder="Document the client request and why it exceeds initial specifications..."></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                  <div class="form-group">
+                    <label for="co-input-hours">Additional Hours</label>
+                    <input type="number" id="co-input-hours" class="form-control" value="12" />
+                  </div>
+                  <div class="form-group">
+                    <label for="co-input-rate">Hourly Rate ($)</label>
+                    <input type="number" id="co-input-rate" class="form-control" value="150" />
+                  </div>
+                  <div class="form-group">
+                    <label for="co-input-days">Timeline Extension</label>
+                    <div class="input-with-suffix">
+                      <input type="number" id="co-input-days" class="form-control" value="4" />
+                      <span class="input-suffix">days</span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                  Generate Binding Change Order
+                </button>
+              </form>
+
+              <!-- List of Issued Change Orders -->
+              <div id="change-orders-list">
+                <!-- Rendered via js/ui.js -->
+              </div>
+            </div>
+
+            <!-- Live Document Preview -->
+            <div class="card" id="document-preview-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Live Statement of Work Document
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Rendered in real-time. Ready for print output or client signature.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-md">
+                    Copy Markdown
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" id="btn-print-doc">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Print / Save PDF
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Paper Document Target -->
+              <div id="document-preview-container">
+                <!-- Rendered via js/document.js -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 3: CLAUSE INTELLIGENCE LIBRARY
+         ==================================================================== -->
+    <section id="view-clauses" class="view-panel">
+      <div class="container">
+        <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+          <span class="badge badge-brand" style="margin-bottom: 8px;">Clause Intelligence</span>
+          <h2>Field-Tested Contract Defenses</h2>
+          <p>
+            Curated contractual clauses written in enforceable language with plain-English rationales.
+            Drafting aid — have qualified counsel review for your specific jurisdiction.
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div style="display: flex; gap: 12px; max-width: 820px; margin: 0 auto 28px;">
+          <input type="text" id="clause-search-input" class="form-control" placeholder="Search clauses by keyword (e.g. IP, delay, revisions)..." style="flex: 2;" />
+          <select id="clause-cat-filter" class="form-control" style="flex: 1;">
+            <option value="ALL">All Categories</option>
+            <option value="Scope">Scope</option>
+            <option value="Revisions">Revisions</option>
+            <option value="Payments">Payments</option>
+            <option value="IP">Intellectual Property</option>
+            <option value="Client Responsibilities">Client Responsibilities</option>
+            <option value="Acceptance">Acceptance</option>
+            <option value="Delays">Delays</option>
+            <option value="Change Orders">Change Orders</option>
+            <option value="Third Parties">Third Parties</option>
+          </select>
+        </div>
+
+        <!-- Clauses Grid -->
+        <div id="clauses-library-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
+          <!-- Injected via js/ui.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 4: SCOPE LEAKAGE CALCULATOR
+         ==================================================================== -->
+    <section id="view-calculator" class="view-panel">
+      <div class="container">
+        <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+          <span class="badge badge-warning" style="margin-bottom: 8px;">Margin Leakage Analysis</span>
+          <h2>Interactive Scope Creep & Revenue Recovery Calculator</h2>
+          <p>Model the real-world financial cost of unbilled revision rounds and casual out-of-scope favors.</p>
+        </div>
+
+        <div class="card" style="max-width: 840px; margin: 0 auto;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: 24px;">
+            <div>
+              <div class="label-row">
+                <label for="calc-project-val">Average Project Fee</label>
+                <span id="display-val-project" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">$7,000</span>
+              </div>
+              <input type="range" id="calc-project-val" min="1500" max="40000" step="500" value="7000" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-projects-year">Client Projects Completed / Year</label>
+                <span id="display-val-projects" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">8 projects</span>
+              </div>
+              <input type="range" id="calc-projects-year" min="1" max="30" value="8" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-included-rev">Contracted Revisions Per Milestone</label>
+                <span id="display-val-included" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">2 rounds</span>
+              </div>
+              <input type="range" id="calc-included-rev" min="1" max="6" value="2" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-actual-rev">Actual Revisions Client Demands</label>
+                <span id="display-val-actual" style="font-weight: 700; color: var(--color-danger); font-family: var(--font-mono);">5 rounds</span>
+              </div>
+              <input type="range" id="calc-actual-rev" min="1" max="10" value="5" class="form-control" style="accent-color: var(--color-danger); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-hours-rev">Average Hours Spent Per Revision Round</label>
+                <span id="display-val-hours" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">4 hrs/round</span>
+              </div>
+              <input type="range" id="calc-hours-rev" min="1" max="15" value="4" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-hourly-rate">Your Standard Hourly Billing Rate</label>
+                <span id="display-val-rate" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">$140/hr</span>
+              </div>
+              <input type="range" id="calc-hourly-rate" min="50" max="350" step="10" value="140" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+          </div>
+
+          <!-- Dynamic Output Metrics -->
+          <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center;">
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">UNBILLED HOURS</div>
+              <div id="calc-res-hours" style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-top: 4px; font-family: var(--font-mono);">96 hrs/yr</div>
+            </div>
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">ANNUAL LEAKAGE</div>
+              <div id="calc-res-leakage" style="font-size: 1.8rem; font-weight: 800; color: var(--color-danger); margin-top: 4px; font-family: var(--font-mono);">$13,440</div>
+            </div>
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">PROFIT MARGIN DRAIN</div>
+              <div id="calc-res-margin" style="font-size: 1.8rem; font-weight: 800; color: var(--color-warning); margin-top: 4px; font-family: var(--font-mono);">19%</div>
+            </div>
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">RECOVERABLE REVENUE</div>
+              <div id="calc-res-recovered" style="font-size: 1.8rem; font-weight: 800; color: var(--color-brand); margin-top: 4px; font-family: var(--font-mono);">$13,440</div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 24px;">
+            <button type="button" class="btn btn-primary" onclick="ScopeLockRouter.navigate('studio')">
+              Lock In Scope for Next Client Project →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 5: CLIENT SIGN-OFF PORTAL
+         ==================================================================== -->
+    <section id="view-client-portal" class="view-panel">
+      <div class="container">
+        <div class="card" id="client-portal-card-body">
+          <!-- Rendered via js/ui.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 6: STANDARDS & FAQ
+         ==================================================================== -->
+    <section id="view-faq" class="view-panel">
+      <div class="container">
+        <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+          <span class="badge badge-brand" style="margin-bottom: 8px;">Knowledge Base</span>
+          <h2>Scope Control Standards & Legal Enforceability</h2>
+          <p>Educational guidance on structuring clear commercial contracts and protecting consulting margins.</p>
+        </div>
+
+        <div style="max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">What constitutes legally binding scope in a Statement of Work?</h3>
+            <p style="font-size: 0.88rem;">
+              A Statement of Work creates binding obligations when it specifies explicit consideration (compensation in exchange for defined deliverables) and mutual assent (signatures). Ambiguous phrases like "unlimited revisions" or "until satisfied" create evidentiary nightmares; quantifiable metrics (e.g. "2 consolidated rounds of written feedback within 5 business days") provide clear, objective standards.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">Why is "IP transfer upon final payment" so critical for contractors?</h3>
+            <p style="font-size: 0.88rem;">
+              Under copyright law in most jurisdictions, if an agreement specifies that work is "made for hire" or assigns copyright upon creation without contingency, the client may legally own the deliverables before making the final payment. ScopeLock’s IP clause ensures ownership rights transfer strictly upon receipt of 100% of agreed fees in cleared funds.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">How should independent studios introduce Change Orders without friction?</h3>
+            <p style="font-size: 0.88rem;">
+              Position change orders as a mechanism to protect delivery schedules: <em>"We would be glad to implement that workspace switcher! Because it's outside our initial 5-screen scope, here is the quick Change Order specifying the +12 hours and 4-day deadline adjustment so our team can immediately schedule the work."</em>
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">What is the legal validity of electronic acknowledgments in the Client Portal?</h3>
+            <p style="font-size: 0.88rem;">
+              ScopeLock’s client portal provides an electronic verification and acknowledgment workflow suitable for prototyping and audit trails. For high-liability enterprise transactions, consult local regulations (e.g., E-SIGN Act in the US, eIDAS in the EU) to determine whether certified digital signature providers (like DocuSign or Adobe Sign) are required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer & Legal Disclaimer -->
+  <footer class="site-footer">
+    <div class="container">
+      <!-- Legal Safety Disclaimer Banner -->
+      <div class="footer-disclaimer-box">
+        <strong>Commercial Drafting & Scope Management Notice:</strong> ScopeLock provides drafting and project-management tools, not legal advice. Contract requirements and enforceability vary by jurisdiction. Consider review by qualified legal counsel before relying on an agreement.
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 12px;">
+            <div class="brand-mark">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <span>ScopeLock</span>
+          </div>
+          <p style="font-size: 0.84rem; max-width: 320px;">
+            The contract-grade scope-control engine built for independent consultants, engineers, designers, and boutique digital agencies.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Workstation</h4>
+          <ul class="footer-link-list">
+            <li><a href="#studio" onclick="ScopeLockRouter.navigate('studio'); return false;">Scope Studio</a></li>
+            <li><a href="#clauses" onclick="ScopeLockRouter.navigate('clauses'); return false;">Clause Intelligence</a></li>
+            <li><a href="#calculator" onclick="ScopeLockRouter.navigate('calculator'); return false;">Leakage Calculator</a></li>
+            <li><a href="#client-portal" onclick="ScopeLockRouter.navigate('client-portal'); return false;">Client Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Industry Presets</h4>
+          <ul class="footer-link-list">
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('web-dev'); ScopeLockRouter.navigate('studio'); return false;">Full-Stack Web App</a></li>
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('ui-ux-sprint'); ScopeLockRouter.navigate('studio'); return false;">SaaS UI/UX Sprint</a></li>
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('brand-identity'); ScopeLockRouter.navigate('studio'); return false;">Brand Identity</a></li>
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('mobile-app'); ScopeLockRouter.navigate('studio'); return false;">Mobile App MVP</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Governance</h4>
+          <ul class="footer-link-list">
+            <li><a href="#faq" onclick="ScopeLockRouter.navigate('faq'); return false;">Standards & FAQ</a></li>
+            <li><a href="#studio" onclick="window.print(); return false;">Print Statement of Work</a></li>
+            <li><a href="#home" onclick="ScopeLockRouter.navigate('home'); return false;">Product Overview</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>© 2026 ScopeLock Technologies. Client-side encrypted & zero-telemetry.</div>
+        <div>Engineered for high-performing studios & independent contractors.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Modular Scripts Architecture -->
+  <script src="js/presets.js"></script>
+  <script src="js/clauses.js"></script>
+  <script src="js/calculations.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/risk-engine.js"></script>
+  <script src="js/change-orders.js"></script>
+  <script src="js/document.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

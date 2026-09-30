@@ -1,0 +1,134 @@
+/**
+ * ScopeLock Responsive Design
+ * Tested across 320px, 375px, 390px, 414px, 768px, 1024px, 1280px+
+ */
+
+@media (max-width: 1100px) {
+  .studio-layout {
+    grid-template-columns: 1fr;
+  }
+  .studio-sidebar {
+    position: static;
+  }
+  .sandbox-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2.3rem;
+  }
+  .hero-copy {
+    font-size: 1rem;
+  }
+  .hero-cta-bar {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .hero-cta-bar .btn {
+    width: 100%;
+  }
+
+  /* Mobile Navigation Menu */
+  .mobile-menu-btn {
+    display: block;
+  }
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-medium);
+    flex-direction: column;
+    padding: var(--space-md);
+    gap: 8px;
+    box-shadow: var(--shadow-lg);
+  }
+  .nav-menu.open {
+    display: flex;
+  }
+  .nav-link {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  /* Table transformations for mobile */
+  .table-wrap {
+    border: none;
+    background: transparent;
+  }
+  .data-table, .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
+    display: block;
+  }
+  .data-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .data-table tr {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-md);
+    padding: 12px;
+  }
+  .data-table td {
+    padding: 6px 0;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Document preview adjustments */
+  .paper-document {
+    padding: 24px 16px;
+  }
+  .parties-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .doc-signatures-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* Grid simplifications */
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-headline {
+    font-size: 1.95rem;
+  }
+  .card {
+    padding: var(--space-md);
+  }
+  .btn {
+    padding: 8px 14px;
+  }
+}

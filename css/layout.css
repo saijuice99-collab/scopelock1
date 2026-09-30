@@ -1,0 +1,391 @@
+/**
+ * ScopeLock Layout & View Architecture
+ */
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.site-main {
+  flex: 1;
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-weight: 750;
+  font-size: 1.18rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #10b981, #047857);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #042f1a;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 550;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-elevated);
+}
+
+.nav-link.active {
+  color: #ffffff;
+  background: var(--bg-surface-elevated);
+  box-shadow: inset 0 0 0 1px var(--border-medium);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   VIEWS ARCHITECTURE
+   ========================================================================== */
+.view-panel {
+  display: none;
+  padding: var(--space-2xl) 0 var(--space-3xl);
+}
+
+.view-panel.active {
+  display: block;
+  animation: panelFadeIn 0.22s ease-out;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   VIEW: HOME / PRODUCT HERO & SANDBOX
+   ========================================================================== */
+.hero-wrapper {
+  text-align: center;
+  padding: var(--space-3xl) 0 var(--space-2xl);
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-lg);
+}
+
+.hero-headline {
+  max-width: 900px;
+  margin: 0 auto var(--space-md);
+  font-size: 3.4rem;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-copy {
+  max-width: 660px;
+  margin: 0 auto var(--space-xl);
+  font-size: 1.12rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.hero-cta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-3xl);
+}
+
+/* Hero Live Risk Sandbox */
+.sandbox-card {
+  max-width: 1040px;
+  margin: 0 auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), 0 0 50px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  text-align: left;
+}
+
+.sandbox-top {
+  background: var(--bg-surface-elevated);
+  padding: 10px var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sandbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+}
+
+/* ==========================================================================
+   VIEW: SCOPE STUDIO (WORKSTATION MULTI-PANEL)
+   ========================================================================== */
+.studio-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.studio-sidebar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  position: sticky;
+  top: 88px;
+}
+
+.studio-main-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Deliverable Matrix Card */
+.del-table-row {
+  display: contents;
+}
+
+/* ==========================================================================
+   LIVE DOCUMENT PREVIEW (PAPER SOW)
+   ========================================================================== */
+.paper-document {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 4px;
+  padding: 48px;
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-lg);
+  line-height: 1.6;
+}
+
+.paper-document h1, .paper-document h2, .paper-document h3, .paper-document strong {
+  color: #0f172a;
+}
+
+.paper-document p {
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.doc-header-band {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.doc-title-main {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.doc-subhead-text {
+  font-size: 0.8rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.parties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.doc-section-block {
+  margin-bottom: 24px;
+}
+
+.doc-section-heading {
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.doc-legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-bottom: 12px;
+}
+
+.doc-legal-table th {
+  background: #f1f5f9;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.doc-legal-table td {
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.doc-signatures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.signature-line {
+  height: 1px;
+  background: #0f172a;
+  margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   FOOTER & LEGAL SAFETY DISCLAIMER
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  padding: var(--space-3xl) 0 var(--space-xl);
+  margin-top: auto;
+}
+
+.footer-disclaimer-box {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-2xl);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.footer-col h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.footer-link-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-link-list a {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+}
+
+.footer-link-list a:hover {
+  color: var(--text-primary);
+}
+
+.footer-bottom-bar {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}

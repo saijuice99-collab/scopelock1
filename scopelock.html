@@ -1,0 +1,4583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScopeLock — The Professional Scope-Control Engine</title>
+  <meta name="description" content="Turn vague project scope into explicit deliverables, enforceable boundaries, risk visibility, and paid change orders for independent consultants, engineers, and boutique agencies." />
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ScopeLock — The Professional Scope-Control Engine" />
+  <meta property="og:description" content="Control the scope. Protect the margin. The contract-grade Statement of Work and Change-Order engine." />
+  <meta name="theme-color" content="#090a0f" />
+
+  <!-- Modular CSS Architecture -->
+  
+  
+  
+  
+  
+  
+<style>
+
+/* css/variables.css */
+/**
+ * ScopeLock Design System Variables
+ * Theme Colors: #090a0f (Obsidian), #11131c (Secondary Surface), #10b981 (Emerald Accent), #f59e0b (Warning Amber)
+ */
+
+:root {
+  /* Core Brand Colors */
+  --bg-primary: #090a0f;
+  --bg-surface: #11131c;
+  --bg-surface-elevated: #181b26;
+  --bg-surface-subtle: #1e2230;
+  --bg-surface-hover: #24293a;
+  --bg-glass: rgba(17, 19, 28, 0.88);
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --border-focus: #10b981;
+
+  /* Typography Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-dim: #475569;
+  --text-inverse: #090a0f;
+
+  /* Accent & Functional Palettes */
+  --color-brand: #10b981;
+  --color-brand-glow: rgba(16, 185, 129, 0.22);
+  --color-brand-dark: #059669;
+  --color-brand-light: #34d399;
+
+  --color-warning: #f59e0b;
+  --color-warning-glow: rgba(245, 158, 11, 0.2);
+  --color-warning-dark: #d97706;
+
+  --color-danger: #f43f5e;
+  --color-danger-glow: rgba(244, 63, 94, 0.22);
+
+  --color-info: #0284c7;
+  --color-info-glow: rgba(2, 132, 199, 0.2);
+
+  /* Spacing Scale */
+  --space-2xs: 4px;
+  --space-xs: 6px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Typography Stack */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.75);
+  --shadow-glow-brand: 0 0 24px var(--color-brand-glow);
+  --shadow-glow-warning: 0 0 24px var(--color-warning-glow);
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* css/base.css */
+/**
+ * ScopeLock Base Typography & Resets
+ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+h1 {
+  font-size: 2.85rem;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: 1.95rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-size: 1.35rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-brand);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-brand-light);
+}
+
+/* Tabular number font style for numbers/finance */
+.tabular-nums, .num, .stat-num, .price, .hours, .percentage {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Selection */
+::selection {
+  background: rgba(16, 185, 129, 0.3);
+  color: #ffffff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* Accessibility reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* css/components.css */
+/**
+ * ScopeLock Enhanced Component Library
+ * Ultra-refined dark surfaces, high-contrast typography, interactive workstations.
+ */
+
+/* ==========================================================================
+   BUTTONS & CONTROLS
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  line-height: 1.3;
+  user-select: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.btn-primary, .btn-brand {
+  background: #10b981;
+  color: #042f1a;
+  border-color: #34d399;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  font-weight: 650;
+}
+
+.btn-primary:hover, .btn-brand:hover {
+  background: #34d399;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active, .btn-brand:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-surface-subtle);
+  border-color: var(--border-strong);
+  color: #ffffff;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  color: #1c0e00;
+  border-color: #fcd34d;
+  font-weight: 650;
+}
+
+.btn-warning:hover {
+  background: #fbbf24;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+}
+
+.btn-danger {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.btn-danger:hover {
+  background: #f43f5e;
+  color: #ffffff;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.78rem;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 0.98rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-icon {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-subtle);
+  border-color: var(--border-medium);
+}
+
+.btn-icon.danger:hover {
+  color: #fb7185;
+  border-color: var(--color-danger);
+  background: rgba(244, 63, 94, 0.15);
+}
+
+/* ==========================================================================
+   FORM ELEMENTS
+   ========================================================================== */
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  letter-spacing: 0.01em;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.86rem;
+  padding: 7px 11px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.form-control::placeholder {
+  color: var(--text-dim);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.input-with-suffix {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-suffix .form-control {
+  padding-right: 54px;
+}
+
+.input-suffix {
+  position: absolute;
+  right: 10px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   BADGES & CHIPS
+   ========================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+}
+
+.badge-brand {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.badge-danger {
+  background: rgba(244, 63, 94, 0.15);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.35);
+}
+
+.badge-neutral {
+  background: var(--bg-surface-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.badge-info {
+  background: rgba(2, 132, 199, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(2, 132, 199, 0.35);
+}
+
+/* ==========================================================================
+   WORKFLOW STEPPER
+   ========================================================================== */
+.workflow-stepper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 6px;
+  margin-bottom: var(--space-xl);
+  overflow-x: auto;
+}
+
+.step-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.step-item:hover {
+  background: var(--bg-surface-elevated);
+  color: var(--text-primary);
+}
+
+.step-item.active {
+  background: var(--bg-surface-elevated);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+.step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-surface-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.step-item.active .step-num {
+  background: var(--color-brand);
+  color: #042f1a;
+}
+
+/* ==========================================================================
+   CARDS & PANELS
+   ========================================================================== */
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  transition: border-color var(--transition-fast);
+}
+
+.card:hover {
+  border-color: var(--border-medium);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.015em;
+}
+
+/* ==========================================================================
+   DATA TABLES (WORKSTATION MATRIX)
+   ========================================================================== */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.84rem;
+}
+
+.data-table th {
+  background: var(--bg-surface-elevated);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-medium);
+}
+
+.data-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.table-input {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.84rem;
+  border-radius: 4px;
+  padding: 4px 6px;
+  width: 100%;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.table-input:hover {
+  border-color: var(--border-subtle);
+  background: var(--bg-surface-elevated);
+}
+
+.table-input:focus {
+  outline: none;
+  background: var(--bg-surface-elevated);
+  border-color: var(--color-brand);
+}
+
+/* ==========================================================================
+   RISK ENGINE VISUALS & METERS
+   ========================================================================== */
+.risk-meter-box {
+  background: #0d0f17;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.risk-score-display {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-mono);
+}
+
+.risk-num {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.risk-max {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+/* Segmented progress bar */
+.segmented-risk-bar {
+  display: flex;
+  gap: 4px;
+  height: 6px;
+  margin: 10px 0 16px;
+}
+
+.segment-pill {
+  flex: 1;
+  background: var(--bg-surface-subtle);
+  border-radius: 2px;
+  transition: background var(--transition-smooth);
+}
+
+.segment-pill.active-brand { background: var(--color-brand); box-shadow: 0 0 8px var(--color-brand-glow); }
+.segment-pill.active-warning { background: var(--color-warning); box-shadow: 0 0 8px var(--color-warning-glow); }
+.segment-pill.active-danger { background: var(--color-danger); box-shadow: 0 0 8px var(--color-danger-glow); }
+
+/* Finding rows with 1-click Fix Now buttons */
+.finding-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.8rem;
+  background: var(--bg-surface);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid transparent;
+  transition: background var(--transition-fast);
+}
+
+.finding-row:hover {
+  background: var(--bg-surface-elevated);
+}
+
+.finding-row.critical { border-left-color: var(--color-danger); }
+.finding-row.high { border-left-color: var(--color-warning); }
+.finding-row.moderate { border-left-color: #38bdf8; }
+.finding-row.passed { border-left-color: var(--color-brand); }
+
+/* ==========================================================================
+   TOASTS
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  transform: translateY(12px);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  pointer-events: auto;
+  max-width: 380px;
+}
+
+.toast.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-brand);
+  flex-shrink: 0;
+}
+
+.toast-success .toast-indicator { background: var(--color-brand); }
+.toast-warning .toast-indicator { background: var(--color-warning); }
+.toast-danger .toast-indicator { background: var(--color-danger); }
+
+/* css/layout.css */
+/**
+ * ScopeLock Layout & View Architecture
+ */
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.site-main {
+  flex: 1;
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-weight: 750;
+  font-size: 1.18rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #10b981, #047857);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #042f1a;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 550;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-elevated);
+}
+
+.nav-link.active {
+  color: #ffffff;
+  background: var(--bg-surface-elevated);
+  box-shadow: inset 0 0 0 1px var(--border-medium);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   VIEWS ARCHITECTURE
+   ========================================================================== */
+.view-panel {
+  display: none;
+  padding: var(--space-2xl) 0 var(--space-3xl);
+}
+
+.view-panel.active {
+  display: block;
+  animation: panelFadeIn 0.22s ease-out;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   VIEW: HOME / PRODUCT HERO & SANDBOX
+   ========================================================================== */
+.hero-wrapper {
+  text-align: center;
+  padding: var(--space-3xl) 0 var(--space-2xl);
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-lg);
+}
+
+.hero-headline {
+  max-width: 900px;
+  margin: 0 auto var(--space-md);
+  font-size: 3.4rem;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-copy {
+  max-width: 660px;
+  margin: 0 auto var(--space-xl);
+  font-size: 1.12rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.hero-cta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-3xl);
+}
+
+/* Hero Live Risk Sandbox */
+.sandbox-card {
+  max-width: 1040px;
+  margin: 0 auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), 0 0 50px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  text-align: left;
+}
+
+.sandbox-top {
+  background: var(--bg-surface-elevated);
+  padding: 10px var(--space-md);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sandbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+}
+
+/* ==========================================================================
+   VIEW: SCOPE STUDIO (WORKSTATION MULTI-PANEL)
+   ========================================================================== */
+.studio-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.studio-sidebar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  position: sticky;
+  top: 88px;
+}
+
+.studio-main-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* Deliverable Matrix Card */
+.del-table-row {
+  display: contents;
+}
+
+/* ==========================================================================
+   LIVE DOCUMENT PREVIEW (PAPER SOW)
+   ========================================================================== */
+.paper-document {
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 4px;
+  padding: 48px;
+  font-family: var(--font-sans);
+  box-shadow: var(--shadow-lg);
+  line-height: 1.6;
+}
+
+.paper-document h1, .paper-document h2, .paper-document h3, .paper-document strong {
+  color: #0f172a;
+}
+
+.paper-document p {
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.doc-header-band {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.doc-title-main {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.doc-subhead-text {
+  font-size: 0.8rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.parties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.doc-section-block {
+  margin-bottom: 24px;
+}
+
+.doc-section-heading {
+  font-size: 0.95rem;
+  font-weight: 800;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.doc-legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-bottom: 12px;
+}
+
+.doc-legal-table th {
+  background: #f1f5f9;
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.doc-legal-table td {
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.doc-signatures-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.signature-line {
+  height: 1px;
+  background: #0f172a;
+  margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   FOOTER & LEGAL SAFETY DISCLAIMER
+   ========================================================================== */
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  padding: var(--space-3xl) 0 var(--space-xl);
+  margin-top: auto;
+}
+
+.footer-disclaimer-box {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-2xl);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.footer-col h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+}
+
+.footer-link-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-link-list a {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+}
+
+.footer-link-list a:hover {
+  color: var(--text-primary);
+}
+
+.footer-bottom-bar {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* css/responsive.css */
+/**
+ * ScopeLock Responsive Design
+ * Tested across 320px, 375px, 390px, 414px, 768px, 1024px, 1280px+
+ */
+
+@media (max-width: 1100px) {
+  .studio-layout {
+    grid-template-columns: 1fr;
+  }
+  .studio-sidebar {
+    position: static;
+  }
+  .sandbox-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2.3rem;
+  }
+  .hero-copy {
+    font-size: 1rem;
+  }
+  .hero-cta-bar {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  .hero-cta-bar .btn {
+    width: 100%;
+  }
+
+  /* Mobile Navigation Menu */
+  .mobile-menu-btn {
+    display: block;
+  }
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-medium);
+    flex-direction: column;
+    padding: var(--space-md);
+    gap: 8px;
+    box-shadow: var(--shadow-lg);
+  }
+  .nav-menu.open {
+    display: flex;
+  }
+  .nav-link {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  /* Table transformations for mobile */
+  .table-wrap {
+    border: none;
+    background: transparent;
+  }
+  .data-table, .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
+    display: block;
+  }
+  .data-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .data-table tr {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-md);
+    padding: 12px;
+  }
+  .data-table td {
+    padding: 6px 0;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .data-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Document preview adjustments */
+  .paper-document {
+    padding: 24px 16px;
+  }
+  .parties-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .doc-signatures-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* Grid simplifications */
+  .footer-columns {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-headline {
+    font-size: 1.95rem;
+  }
+  .card {
+    padding: var(--space-md);
+  }
+  .btn {
+    padding: 8px 14px;
+  }
+}
+
+/* css/print.css */
+/**
+ * ScopeLock Print Stylesheet
+ * Optimized for crisp A4 / Letter legal document generation.
+ */
+
+@media print {
+  @page {
+    margin: 1.8cm;
+    size: auto;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Suppress all Application UI and controls */
+  .site-header,
+  .site-footer,
+  .studio-sidebar,
+  .btn,
+  button,
+  .toast-container,
+  .modal-backdrop,
+  .hero-wrapper,
+  .sandbox-card,
+  #risk-auditor-widget,
+  #change-orders-container,
+  .workspace-card:not(#document-preview-card),
+  .card-header button,
+  .nav-menu,
+  .mobile-menu-btn,
+  .sidebar-heading {
+    display: none !important;
+  }
+
+  /* Force Document preview display */
+  .view-panel {
+    display: none !important;
+  }
+
+  #view-studio {
+    display: block !important;
+    padding: 0 !important;
+  }
+
+  .studio-layout {
+    display: block !important;
+  }
+
+  .workspace-card#document-preview-card {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .paper-document {
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
+    color: #000000 !important;
+  }
+
+  .paper-document * {
+    color: #000000 !important;
+  }
+
+  .doc-legal-table th {
+    background: #e2e8f0 !important;
+    color: #000000 !important;
+    border: 1px solid #94a3b8 !important;
+  }
+
+  .doc-legal-table td {
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .doc-section-block {
+    page-break-inside: avoid;
+  }
+
+  .doc-signatures-grid {
+    page-break-inside: avoid;
+    margin-top: 50px !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- Site Header & Global Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#home" class="brand-logo" onclick="ScopeLockRouter.navigate('home'); return false;">
+        <div class="brand-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <span>ScopeLock</span>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link" data-tab="home">Product</a>
+        <a href="#studio" class="nav-link active" data-tab="studio">Scope Studio</a>
+        <a href="#clauses" class="nav-link" data-tab="clauses">Clause Library</a>
+        <a href="#calculator" class="nav-link" data-tab="calculator">Leakage Calculator</a>
+        <a href="#client-portal" class="nav-link" data-tab="client-portal">Client Portal</a>
+        <a href="#faq" class="nav-link" data-tab="faq">Standards & FAQ</a>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="ScopeLockRouter.navigate('client-portal')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Client View
+        </button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="ScopeLockRouter.navigate('studio')">
+          Launch Studio
+        </button>
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Router Container -->
+  <main class="site-main">
+
+    <!-- ====================================================================
+         VIEW 1: HOME / PRODUCT SHOWCASE & RISK SANDBOX
+         ==================================================================== -->
+    <section id="view-home" class="view-panel">
+      <div class="container">
+        
+        <!-- Hero Section -->
+        <div class="hero-wrapper">
+          <div class="hero-tag">
+            <span class="badge badge-brand">Scope Governance</span>
+            <span>Contract-grade architecture for modern independents</span>
+          </div>
+
+          <h1 class="hero-headline">CONTROL THE SCOPE.<br />PROTECT THE MARGIN.</h1>
+          <p class="hero-copy">
+            ScopeLock turns vague project scope into explicit deliverables, enforceable revision limits, risk visibility, and paid change orders. Designed for senior consultants, developers, and boutique agencies.
+          </p>
+
+          <div class="hero-cta-bar">
+            <button type="button" class="btn btn-primary btn-lg" onclick="ScopeLockRouter.navigate('studio')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              Build Your First SOW
+            </button>
+            <button type="button" class="btn btn-secondary btn-lg" onclick="document.getElementById('live-risk-sandbox').scrollIntoView({ behavior: 'smooth' });">
+              Explore Risk Sandbox ↓
+            </button>
+          </div>
+
+          <!-- Hero Live Interactive Risk Sandbox -->
+          <div class="sandbox-card" id="live-risk-sandbox">
+            <div class="sandbox-top">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #fb7185;"></span>
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #fbbf24;"></span>
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #34d399;"></span>
+                <span style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-left: 8px;">live-scope-risk-sandbox.ts</span>
+              </div>
+              <div id="sandbox-status">
+                <span class="badge badge-danger">CRITICAL EXPOSURE</span>
+              </div>
+            </div>
+
+            <div class="sandbox-grid">
+              <!-- Left: Interactive Controls -->
+              <div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Simulate Contract Vulnerabilities</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+                  Toggle terms below to see how commercial ambiguity creates financial exposure:
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-unlimited-rev" checked style="accent-color: var(--color-danger);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">Unlimited Revisions ("Until Satisfied")</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Leaves milestone acceptance to subjective whims</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-net-terms" style="accent-color: var(--color-brand);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">Enforce Net-7 Payment Terms (vs Net-60)</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Halts active production if invoices are unpaid</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-exclusions" style="accent-color: var(--color-brand);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">Define Explicit Out-of-Scope Exclusions</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Lists third-party licenses, cloud hosting, migrations</div>
+                    </div>
+                  </label>
+
+                  <label style="display: flex; align-items: center; gap: 10px; background: var(--bg-surface-elevated); padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); cursor: pointer;">
+                    <input type="checkbox" id="sb-ip-shield" style="accent-color: var(--color-brand);" />
+                    <div>
+                      <div style="font-size: 0.88rem; font-weight: 600;">IP Transfer Contingent on 100% Cleared Payment</div>
+                      <div style="font-size: 0.76rem; color: var(--text-muted);">Retains full copyright until all balances clear</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Right: Real-Time Gauge Analysis -->
+              <div style="display: flex; flex-direction: column; justify-content: space-between; background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 24px;">
+                <div>
+                  <div style="font-size: 0.76rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.05em;">ESTIMATED VULNERABILITY INDEX</div>
+                  <div style="display: flex; align-items: baseline; gap: 4px; margin-top: 6px;">
+                    <span id="sandbox-score" class="risk-num" style="color: var(--color-danger); font-size: 3.5rem; font-family: var(--font-mono); font-weight: 800;">25</span>
+                    <span style="font-size: 1.2rem; color: var(--text-muted); font-family: var(--font-mono);">/100</span>
+                  </div>
+                </div>
+
+                <div style="padding: 16px 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); margin: 16px 0;">
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">Estimated Revenue Leakage:</span>
+                    <strong id="sandbox-leakage" style="color: var(--color-danger); font-family: var(--font-mono); font-size: 1.1rem;">$11,400</strong>
+                  </div>
+                  <div style="display: flex; justify-content: space-between;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">Client Turnaround Delay Exposure:</span>
+                    <strong style="color: #fbbf24; font-family: var(--font-mono); font-size: 0.95rem;">Unbounded</strong>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="ScopeLockRouter.navigate('studio')">
+                  Load Protected SOW in Studio →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 Visual Storytelling Sections -->
+        
+        <!-- Section 1: The Scope Creep Problem -->
+        <div style="padding: var(--space-3xl) 0; border-top: 1px solid var(--border-subtle);">
+          <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+            <span class="badge badge-danger" style="margin-bottom: 8px;">The Hidden Tax</span>
+            <h2>Why Boutique Teams Bleed Margin</h2>
+            <p>Scope creep is rarely malicious. It begins with informal requests on Slack: "Can we just tweak this one thing?" Without explicit contractual boundaries, friendly accommodation turns into uncompensated labor.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);">
+            <div class="card">
+              <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-danger);">Uncapped Revisions</h3>
+              <p style="font-size: 0.86rem;">Clients treat feedback as open-ended workshops rather than structured milestone sign-offs, causing project timelines to double.</p>
+            </div>
+            <div class="card">
+              <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: var(--color-warning);">Ghosting & Dormancy</h3>
+              <p style="font-size: 0.86rem;">Clients pause responses for 4 weeks then return demanding immediate rush delivery when your calendar is completely booked.</p>
+            </div>
+            <div class="card">
+              <h3 style="font-size: 1.1rem; margin-bottom: 6px; color: #38bdf8;">Unprotected IP Rights</h3>
+              <p style="font-size: 0.86rem;">Clients take staging code, Figma files, or vector logos to a cheaper subcontractor before paying the final 25% milestone invoice.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: How ScopeLock Works -->
+        <div style="padding: var(--space-3xl) 0; border-top: 1px solid var(--border-subtle);">
+          <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+            <span class="badge badge-brand" style="margin-bottom: 8px;">The 4-Step Architecture</span>
+            <h2>How ScopeLock Enforces Protection</h2>
+            <p>From initial scope drafting to final execution and change-order addenda.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md);">
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 01</span>
+              <h4 style="margin-bottom: 6px;">Deliverables Matrix</h4>
+              <p style="font-size: 0.82rem;">Define line items, revision caps, review SLAs, and explicit out-of-scope exclusions.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 02</span>
+              <h4 style="margin-bottom: 6px;">Risk Audit Engine</h4>
+              <p style="font-size: 0.82rem;">Rules engine scores contract safety and applies protective clauses to eliminate loopholes.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 03</span>
+              <h4 style="margin-bottom: 6px;">Client Verification</h4>
+              <p style="font-size: 0.82rem;">Client reviews explicit deliverables and completes electronic acknowledgment.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+              <span class="badge badge-brand" style="margin-bottom: 12px;">Step 04</span>
+              <h4 style="margin-bottom: 6px;">Change Orders</h4>
+              <p style="font-size: 0.82rem;">Turn future client requests into formal, paid addenda with timeline adjustments.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 2: SCOPE STUDIO (WORKSTATION)
+         ==================================================================== -->
+    <section id="view-studio" class="view-panel active">
+      <div class="container">
+        
+        
+        <!-- Studio Workflow Stepper -->
+        <nav class="workflow-stepper" aria-label="Workstation Steps">
+          <a href="#setup" class="step-item active" onclick="document.querySelector('.studio-sidebar').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">1</span>
+            <span>Project Setup</span>
+          </a>
+          <a href="#deliverables" class="step-item" onclick="document.getElementById('deliverables-matrix-tbody').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">2</span>
+            <span>Deliverables Matrix</span>
+          </a>
+          <a href="#risk" class="step-item" onclick="document.getElementById('risk-auditor-widget').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">3</span>
+            <span>Risk Auditor</span>
+          </a>
+          <a href="#clauses" class="step-item" onclick="document.getElementById('studio-clauses-list').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">4</span>
+            <span>Protective Clauses</span>
+          </a>
+          <a href="#change-orders" class="step-item" onclick="document.getElementById('change-orders-container').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">5</span>
+            <span>Change Orders</span>
+          </a>
+          <a href="#sow-doc" class="step-item" onclick="document.getElementById('document-preview-card').scrollIntoView({ behavior: 'smooth' }); return false;">
+            <span class="step-num">6</span>
+            <span>Statement of Work</span>
+          </a>
+          <a href="#client-portal" class="step-item" onclick="ScopeLockRouter.navigate('client-portal'); return false;">
+            <span class="step-num">7</span>
+            <span>Client Sign-Off</span>
+          </a>
+        </nav>
+
+        <div class="studio-layout">
+          <!-- Sidebar: Setup & Presets -->
+          <aside class="studio-sidebar">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <span style="font-size: 0.82rem; font-weight: 750; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">INDUSTRY PRESETS</span>
+              <span class="badge badge-brand">Instant Setup</span>
+            </div>
+
+            <!-- Preset Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px;">
+              <button type="button" class="btn btn-secondary preset-btn active" data-preset="web-dev" style="justify-content: flex-start;">
+                ⚡ Full-Stack Web App ($9,500)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="ui-ux-sprint" style="justify-content: flex-start;">
+                🎨 SaaS UI/UX Sprint ($6,500)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="brand-identity" style="justify-content: flex-start;">
+                💎 Brand Identity ($5,400)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="mobile-app" style="justify-content: flex-start;">
+                📱 Mobile App MVP ($12,000)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="consulting" style="justify-content: flex-start;">
+                🧠 Technical Advisory ($4,800)
+              </button>
+              <button type="button" class="btn btn-secondary preset-btn" data-preset="custom" style="justify-content: flex-start;">
+                📝 Custom Blank SOW
+              </button>
+            </div>
+
+            <div style="font-size: 0.82rem; font-weight: 750; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 14px;">
+              PROJECT SPECIFICATIONS
+            </div>
+
+            <div class="form-group">
+              <label for="input-proj-name">Project Title</label>
+              <input type="text" id="input-proj-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-client-name">Client Organization</label>
+              <input type="text" id="input-client-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-client-email">Client Contact Email</label>
+              <input type="email" id="input-client-email" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-studio-name">Service Provider / Studio</label>
+              <input type="text" id="input-studio-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="input-studio-email">Provider Email</label>
+              <input type="email" id="input-studio-email" class="form-control" />
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label for="select-currency">Currency</label>
+                <select id="select-currency" class="form-control">
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="GBP">GBP (£)</option>
+                  <option value="INR">INR (₹)</option>
+                  <option value="CAD">CAD ($)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="input-total-fee">Agreed Fee</label>
+                <input type="number" id="input-total-fee" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-hourly-rate">Out-of-Scope Hourly Rate</label>
+              <div class="input-with-suffix">
+                <input type="number" id="input-hourly-rate" class="form-control" />
+                <span class="input-suffix">/hour</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label for="input-start-date">Start Date</label>
+                <input type="date" id="input-start-date" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="input-end-date">End Target</label>
+                <input type="date" id="input-end-date" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-payment-terms">Payment Terms</label>
+              <input type="text" id="input-payment-terms" class="form-control" />
+            </div>
+
+            <!-- Export / Backup Actions -->
+            <div style="display: flex; gap: 6px; margin-top: 20px;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-export-json" style="flex: 1;">
+                Export JSON
+              </button>
+              <label class="btn btn-secondary btn-sm" style="flex: 1; cursor: pointer; text-align: center;">
+                Import JSON
+                <input type="file" id="input-import-json" accept=".json" style="display: none;" />
+              </label>
+            </div>
+          </aside>
+
+          <!-- Main Studio Panel -->
+          <div class="studio-main-panel">
+            
+            <!-- Real-Time Risk Auditor Widget -->
+            <div id="risk-auditor-widget">
+              <!-- Rendered via js/ui.js -->
+            </div>
+
+            <!-- Deliverables Matrix Table -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    Deliverables Matrix & Scope Boundaries
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Itemize specifications, assign explicit revision caps, review SLAs, and define out-of-scope exclusions.
+                  </p>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-add-deliverable">
+                  + Add Deliverable
+                </button>
+              </div>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Deliverable</th>
+                      <th>Specifications</th>
+                      <th>Revisions</th>
+                      <th>Review SLA</th>
+                      <th>Exclusions</th>
+                      <th style="text-align: right;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deliverables-matrix-tbody">
+                    <!-- Rendered via js/ui.js -->
+                  </tbody>
+                </table>
+              </div>
+              <div id="matrix-summary-stats" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; font-size: 0.8rem; color: var(--text-muted); padding-top: 10px;"></div>
+            </div>
+
+            <!-- Milestone Invoicing Schedule -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                    Milestone Invoicing Schedule
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Tie cash release to verifiable stage completions rather than calendar dates.
+                  </p>
+                </div>
+              </div>
+              <div id="milestones-container">
+                <!-- Rendered via js/ui.js -->
+              </div>
+            </div>
+
+            <!-- Enforceable Protective Clauses -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Protective Enforceability Addenda
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Select drafted provisions to append to this Statement of Work.
+                  </p>
+                </div>
+              </div>
+              <div id="studio-clauses-list">
+                <!-- Rendered via js/ui.js -->
+              </div>
+            </div>
+
+            <!-- Dedicated Change Order Workflow Engine -->
+            <div class="card" id="change-orders-container">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Change Order Workflow Engine
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Transform out-of-scope client requests into formal, paid project addenda with schedule adjustments.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Issue Change Order Form -->
+              <form id="co-create-form" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px;">
+                <h4 style="font-size: 0.92rem; margin-bottom: 12px; color: var(--color-brand);">Issue Scope Modification Addendum</h4>
+                <div class="form-group">
+                  <label for="co-input-title">Modification Title / Requested Feature</label>
+                  <input type="text" id="co-input-title" class="form-control" placeholder="e.g. Add Organization Multi-Tenancy & Workspace Switching" required />
+                </div>
+                <div class="form-group">
+                  <label for="co-input-reason">Client Context & Technical Scope Justification</label>
+                  <textarea id="co-input-reason" class="form-control" rows="2" placeholder="Document the client request and why it exceeds initial specifications..."></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                  <div class="form-group">
+                    <label for="co-input-hours">Additional Hours</label>
+                    <input type="number" id="co-input-hours" class="form-control" value="12" />
+                  </div>
+                  <div class="form-group">
+                    <label for="co-input-rate">Hourly Rate ($)</label>
+                    <input type="number" id="co-input-rate" class="form-control" value="150" />
+                  </div>
+                  <div class="form-group">
+                    <label for="co-input-days">Timeline Extension</label>
+                    <div class="input-with-suffix">
+                      <input type="number" id="co-input-days" class="form-control" value="4" />
+                      <span class="input-suffix">days</span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">
+                  Generate Binding Change Order
+                </button>
+              </form>
+
+              <!-- List of Issued Change Orders -->
+              <div id="change-orders-list">
+                <!-- Rendered via js/ui.js -->
+              </div>
+            </div>
+
+            <!-- Live Document Preview -->
+            <div class="card" id="document-preview-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Live Statement of Work Document
+                  </h3>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+                    Rendered in real-time. Ready for print output or client signature.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btn-copy-md">
+                    Copy Markdown
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" id="btn-print-doc">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Print / Save PDF
+                  </button>
+                </div>
+              </div>
+
+              <!-- Live Paper Document Target -->
+              <div id="document-preview-container">
+                <!-- Rendered via js/document.js -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 3: CLAUSE INTELLIGENCE LIBRARY
+         ==================================================================== -->
+    <section id="view-clauses" class="view-panel">
+      <div class="container">
+        <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+          <span class="badge badge-brand" style="margin-bottom: 8px;">Clause Intelligence</span>
+          <h2>Field-Tested Contract Defenses</h2>
+          <p>
+            Curated contractual clauses written in enforceable language with plain-English rationales.
+            Drafting aid — have qualified counsel review for your specific jurisdiction.
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div style="display: flex; gap: 12px; max-width: 820px; margin: 0 auto 28px;">
+          <input type="text" id="clause-search-input" class="form-control" placeholder="Search clauses by keyword (e.g. IP, delay, revisions)..." style="flex: 2;" />
+          <select id="clause-cat-filter" class="form-control" style="flex: 1;">
+            <option value="ALL">All Categories</option>
+            <option value="Scope">Scope</option>
+            <option value="Revisions">Revisions</option>
+            <option value="Payments">Payments</option>
+            <option value="IP">Intellectual Property</option>
+            <option value="Client Responsibilities">Client Responsibilities</option>
+            <option value="Acceptance">Acceptance</option>
+            <option value="Delays">Delays</option>
+            <option value="Change Orders">Change Orders</option>
+            <option value="Third Parties">Third Parties</option>
+          </select>
+        </div>
+
+        <!-- Clauses Grid -->
+        <div id="clauses-library-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);">
+          <!-- Injected via js/ui.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 4: SCOPE LEAKAGE CALCULATOR
+         ==================================================================== -->
+    <section id="view-calculator" class="view-panel">
+      <div class="container">
+        <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+          <span class="badge badge-warning" style="margin-bottom: 8px;">Margin Leakage Analysis</span>
+          <h2>Interactive Scope Creep & Revenue Recovery Calculator</h2>
+          <p>Model the real-world financial cost of unbilled revision rounds and casual out-of-scope favors.</p>
+        </div>
+
+        <div class="card" style="max-width: 840px; margin: 0 auto;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: 24px;">
+            <div>
+              <div class="label-row">
+                <label for="calc-project-val">Average Project Fee</label>
+                <span id="display-val-project" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">$7,000</span>
+              </div>
+              <input type="range" id="calc-project-val" min="1500" max="40000" step="500" value="7000" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-projects-year">Client Projects Completed / Year</label>
+                <span id="display-val-projects" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">8 projects</span>
+              </div>
+              <input type="range" id="calc-projects-year" min="1" max="30" value="8" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-included-rev">Contracted Revisions Per Milestone</label>
+                <span id="display-val-included" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">2 rounds</span>
+              </div>
+              <input type="range" id="calc-included-rev" min="1" max="6" value="2" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-actual-rev">Actual Revisions Client Demands</label>
+                <span id="display-val-actual" style="font-weight: 700; color: var(--color-danger); font-family: var(--font-mono);">5 rounds</span>
+              </div>
+              <input type="range" id="calc-actual-rev" min="1" max="10" value="5" class="form-control" style="accent-color: var(--color-danger); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-hours-rev">Average Hours Spent Per Revision Round</label>
+                <span id="display-val-hours" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">4 hrs/round</span>
+              </div>
+              <input type="range" id="calc-hours-rev" min="1" max="15" value="4" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+
+            <div>
+              <div class="label-row">
+                <label for="calc-hourly-rate">Your Standard Hourly Billing Rate</label>
+                <span id="display-val-rate" style="font-weight: 700; color: var(--color-brand); font-family: var(--font-mono);">$140/hr</span>
+              </div>
+              <input type="range" id="calc-hourly-rate" min="50" max="350" step="10" value="140" class="form-control" style="accent-color: var(--color-brand); cursor: pointer;" />
+            </div>
+          </div>
+
+          <!-- Dynamic Output Metrics -->
+          <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center;">
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">UNBILLED HOURS</div>
+              <div id="calc-res-hours" style="font-size: 1.8rem; font-weight: 800; color: var(--text-primary); margin-top: 4px; font-family: var(--font-mono);">96 hrs/yr</div>
+            </div>
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">ANNUAL LEAKAGE</div>
+              <div id="calc-res-leakage" style="font-size: 1.8rem; font-weight: 800; color: var(--color-danger); margin-top: 4px; font-family: var(--font-mono);">$13,440</div>
+            </div>
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">PROFIT MARGIN DRAIN</div>
+              <div id="calc-res-margin" style="font-size: 1.8rem; font-weight: 800; color: var(--color-warning); margin-top: 4px; font-family: var(--font-mono);">19%</div>
+            </div>
+            <div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">RECOVERABLE REVENUE</div>
+              <div id="calc-res-recovered" style="font-size: 1.8rem; font-weight: 800; color: var(--color-brand); margin-top: 4px; font-family: var(--font-mono);">$13,440</div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 24px;">
+            <button type="button" class="btn btn-primary" onclick="ScopeLockRouter.navigate('studio')">
+              Lock In Scope for Next Client Project →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 5: CLIENT SIGN-OFF PORTAL
+         ==================================================================== -->
+    <section id="view-client-portal" class="view-panel">
+      <div class="container">
+        <div class="card" id="client-portal-card-body">
+          <!-- Rendered via js/ui.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 6: STANDARDS & FAQ
+         ==================================================================== -->
+    <section id="view-faq" class="view-panel">
+      <div class="container">
+        <div style="max-width: 760px; margin: 0 auto; text-align: center; margin-bottom: var(--space-2xl);">
+          <span class="badge badge-brand" style="margin-bottom: 8px;">Knowledge Base</span>
+          <h2>Scope Control Standards & Legal Enforceability</h2>
+          <p>Educational guidance on structuring clear commercial contracts and protecting consulting margins.</p>
+        </div>
+
+        <div style="max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px;">
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">What constitutes legally binding scope in a Statement of Work?</h3>
+            <p style="font-size: 0.88rem;">
+              A Statement of Work creates binding obligations when it specifies explicit consideration (compensation in exchange for defined deliverables) and mutual assent (signatures). Ambiguous phrases like "unlimited revisions" or "until satisfied" create evidentiary nightmares; quantifiable metrics (e.g. "2 consolidated rounds of written feedback within 5 business days") provide clear, objective standards.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">Why is "IP transfer upon final payment" so critical for contractors?</h3>
+            <p style="font-size: 0.88rem;">
+              Under copyright law in most jurisdictions, if an agreement specifies that work is "made for hire" or assigns copyright upon creation without contingency, the client may legally own the deliverables before making the final payment. ScopeLock’s IP clause ensures ownership rights transfer strictly upon receipt of 100% of agreed fees in cleared funds.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">How should independent studios introduce Change Orders without friction?</h3>
+            <p style="font-size: 0.88rem;">
+              Position change orders as a mechanism to protect delivery schedules: <em>"We would be glad to implement that workspace switcher! Because it's outside our initial 5-screen scope, here is the quick Change Order specifying the +12 hours and 4-day deadline adjustment so our team can immediately schedule the work."</em>
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 1.05rem; margin-bottom: 6px;">What is the legal validity of electronic acknowledgments in the Client Portal?</h3>
+            <p style="font-size: 0.88rem;">
+              ScopeLock’s client portal provides an electronic verification and acknowledgment workflow suitable for prototyping and audit trails. For high-liability enterprise transactions, consult local regulations (e.g., E-SIGN Act in the US, eIDAS in the EU) to determine whether certified digital signature providers (like DocuSign or Adobe Sign) are required.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer & Legal Disclaimer -->
+  <footer class="site-footer">
+    <div class="container">
+      <!-- Legal Safety Disclaimer Banner -->
+      <div class="footer-disclaimer-box">
+        <strong>Commercial Drafting & Scope Management Notice:</strong> ScopeLock provides drafting and project-management tools, not legal advice. Contract requirements and enforceability vary by jurisdiction. Consider review by qualified legal counsel before relying on an agreement.
+      </div>
+
+      <div class="footer-columns">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 12px;">
+            <div class="brand-mark">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <span>ScopeLock</span>
+          </div>
+          <p style="font-size: 0.84rem; max-width: 320px;">
+            The contract-grade scope-control engine built for independent consultants, engineers, designers, and boutique digital agencies.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Workstation</h4>
+          <ul class="footer-link-list">
+            <li><a href="#studio" onclick="ScopeLockRouter.navigate('studio'); return false;">Scope Studio</a></li>
+            <li><a href="#clauses" onclick="ScopeLockRouter.navigate('clauses'); return false;">Clause Intelligence</a></li>
+            <li><a href="#calculator" onclick="ScopeLockRouter.navigate('calculator'); return false;">Leakage Calculator</a></li>
+            <li><a href="#client-portal" onclick="ScopeLockRouter.navigate('client-portal'); return false;">Client Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Industry Presets</h4>
+          <ul class="footer-link-list">
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('web-dev'); ScopeLockRouter.navigate('studio'); return false;">Full-Stack Web App</a></li>
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('ui-ux-sprint'); ScopeLockRouter.navigate('studio'); return false;">SaaS UI/UX Sprint</a></li>
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('brand-identity'); ScopeLockRouter.navigate('studio'); return false;">Brand Identity</a></li>
+            <li><a href="#studio" onclick="ScopeLockState.loadPreset('mobile-app'); ScopeLockRouter.navigate('studio'); return false;">Mobile App MVP</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Governance</h4>
+          <ul class="footer-link-list">
+            <li><a href="#faq" onclick="ScopeLockRouter.navigate('faq'); return false;">Standards & FAQ</a></li>
+            <li><a href="#studio" onclick="window.print(); return false;">Print Statement of Work</a></li>
+            <li><a href="#home" onclick="ScopeLockRouter.navigate('home'); return false;">Product Overview</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>© 2026 ScopeLock Technologies. Client-side encrypted & zero-telemetry.</div>
+        <div>Engineered for high-performing studios & independent contractors.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Modular Scripts Architecture -->
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<script>
+
+// --- js/presets.js ---
+/**
+ * ScopeLock Industry Presets
+ * Field-tested templates for Engineering, Design, Product, Mobile & Consulting.
+ */
+
+window.ScopeLockPresets = [
+  {
+    id: 'web-dev',
+    name: 'Full-Stack Web Application',
+    category: 'Engineering',
+    summary: 'Production Next.js / TypeScript web application with authentication, database schema, and staging UAT.',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 9500,
+    hourlyRate: 150,
+    paymentTerms: '50% deposit, 25% staging freeze, 25% production deployment',
+    deliverables: [
+      {
+        id: 'del-101',
+        title: 'System Architecture & Schema Blueprint',
+        description: 'PostgreSQL schema diagram, Prisma migration models, and OpenAPI REST endpoint specifications.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 24,
+        price: 2400,
+        exclusions: 'Legacy database migration scripts, on-premise hardware setup.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-102',
+        title: 'Core Application Frontend (6 Responsive Views)',
+        description: 'Dashboard, Settings, Data Matrix, Detail Modal, User Authentication, and Billing Portal views in Tailwind CSS.',
+        included: true,
+        revisions: 2,
+        slaDays: 4,
+        estimatedHours: 38,
+        price: 3800,
+        exclusions: 'Custom 3D WebGL animations, multi-language internationalization.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-103',
+        title: 'Backend API & Stripe Subscription Webhooks',
+        description: 'Stripe Checkout integration, customer portal webhooks, session auth, and transactional email triggers.',
+        included: true,
+        revisions: 1,
+        slaDays: 3,
+        estimatedHours: 22,
+        price: 2200,
+        exclusions: 'Third-party API license costs, automated load testing beyond 5k rps.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-104',
+        title: 'Staging Deployment & 14-Day UAT Remediation',
+        description: 'Vercel / AWS staging deployment, env variable configuration, and bug remediation within scope boundaries.',
+        included: true,
+        revisions: 1,
+        slaDays: 2,
+        estimatedHours: 11,
+        price: 1100,
+        exclusions: 'Feature additions during QA, 24/7 on-call emergency paging.',
+        status: 'Defined'
+      }
+    ],
+    milestones: [
+      { name: 'Kickoff Retainer & Discovery', percentage: 50, trigger: 'Execution of Statement of Work' },
+      { name: 'Staging Environment Feature Freeze', percentage: 25, trigger: 'Delivery of staging URL for Client UAT review' },
+      { name: 'Production Deployment & IP Transfer', percentage: 25, trigger: 'Repository transfer and production domain routing' }
+    ],
+    clauses: [
+      'ip-upon-payment',
+      'change-order-mandate',
+      'revisions-cap',
+      'client-delay-sla',
+      'late-payment-interest',
+      'third-party-expenses'
+    ]
+  },
+  {
+    id: 'ui-ux-sprint',
+    name: 'SaaS UI/UX Product Sprint',
+    category: 'Product',
+    summary: 'High-fidelity Figma component system, user journeys, and interactive prototype.',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 6500,
+    hourlyRate: 140,
+    paymentTerms: '50% advance, 50% on final vector file delivery',
+    deliverables: [
+      {
+        id: 'del-201',
+        title: 'User Flows & Wireframe Architecture',
+        description: 'Information architecture diagrams, primary conversion funnel, and 12 low-fidelity wireframe flows.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 18,
+        price: 1800,
+        exclusions: 'Recruitment of paid qualitative user testing panels.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-202',
+        title: 'Interactive Figma Prototype (Desktop & Mobile)',
+        description: 'Click-through interactive prototype with auto-layout components, variant states, and transitions.',
+        included: true,
+        revisions: 2,
+        slaDays: 4,
+        estimatedHours: 32,
+        price: 3200,
+        exclusions: 'Production frontend code writing, custom 3D illustration rendering.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-203',
+        title: 'Design System Tokens & Developer Handoff',
+        description: 'Color semantic variables, typography scales, spacing tokens, and component state documentation.',
+        included: true,
+        revisions: 1,
+        slaDays: 2,
+        estimatedHours: 15,
+        price: 1500,
+        exclusions: 'Storybook React implementation.',
+        status: 'Defined'
+      }
+    ],
+    milestones: [
+      { name: 'Commencement Retainer', percentage: 50, trigger: 'Signing of agreement prior to sprint kickoff' },
+      { name: 'Prototype Sign-Off', percentage: 30, trigger: 'Delivery of interactive prototype walkthrough' },
+      { name: 'Design Token Package Release', percentage: 20, trigger: 'Figma file ownership transfer' }
+    ],
+    clauses: [
+      'ip-upon-payment',
+      'change-order-mandate',
+      'revisions-cap',
+      'client-delay-sla',
+      'portfolio-display'
+    ]
+  },
+  {
+    id: 'brand-identity',
+    name: 'Brand Identity & Visual System',
+    category: 'Design',
+    summary: 'Complete brand identity suite, logo marks, typography hierarchy, and brand guide.',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 5400,
+    hourlyRate: 135,
+    paymentTerms: '50% deposit, 50% upon final vector package handoff',
+    deliverables: [
+      {
+        id: 'del-301',
+        title: 'Strategic Positioning & 2 Visual Directions',
+        description: 'Competitor audit, moodboards, and 2 distinct concept directions presented in Figma.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 16,
+        price: 1600,
+        exclusions: 'Company naming ideation, trademark legal registration fees.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-302',
+        title: 'Logo Suite & Master Vector Package',
+        description: 'Primary mark, secondary badge, monochrome mark, favicon, and exported SVG/EPS assets.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 24,
+        price: 2400,
+        exclusions: '3D packaging physical manufacturing oversight.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-303',
+        title: 'Comprehensive Brand Guidelines Deck',
+        description: 'Color pairings, clear space rules, typography guidance, and digital social media templates.',
+        included: true,
+        revisions: 1,
+        slaDays: 2,
+        estimatedHours: 14,
+        price: 1400,
+        exclusions: 'Printed physical book binding.',
+        status: 'Defined'
+      }
+    ],
+    milestones: [
+      { name: 'Project Retainer', percentage: 50, trigger: 'Execution of SOW' },
+      { name: 'Creative Direction Sign-Off', percentage: 30, trigger: 'Client approval of selected concept' },
+      { name: 'Vector Suite Release', percentage: 20, trigger: 'Handoff of master asset archive' }
+    ],
+    clauses: [
+      'ip-upon-payment',
+      'revisions-cap',
+      'change-order-mandate',
+      'portfolio-display'
+    ]
+  },
+  {
+    id: 'mobile-app',
+    name: 'Mobile Application MVP',
+    category: 'Engineering',
+    summary: 'Cross-platform React Native / Expo mobile application for iOS and Android with API client.',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 12000,
+    hourlyRate: 160,
+    paymentTerms: '40% kickoff, 30% TestFlight build, 30% store submission ready',
+    deliverables: [
+      {
+        id: 'del-401',
+        title: 'App Architecture & State Management',
+        description: 'React Native navigation structure, persistent local storage, and secure authentication flow.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 28,
+        price: 2800,
+        exclusions: 'Apple / Google developer account enrollment fees.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-402',
+        title: 'Core App Screen Module (7 Screens)',
+        description: 'Feed, Item Detail, Search & Filter, User Profile, Checkout/Action, and Notification center.',
+        included: true,
+        revisions: 2,
+        slaDays: 4,
+        estimatedHours: 42,
+        price: 4200,
+        exclusions: 'Custom BLE bluetooth hardware device firmware pairing.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-403',
+        title: 'Push Notifications & Deep Linking',
+        description: 'Expo Notification service integration, universal links setup, and background task handlers.',
+        included: true,
+        revisions: 1,
+        slaDays: 3,
+        estimatedHours: 25,
+        price: 2500,
+        exclusions: 'Custom SMS gateway provider billing.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-404',
+        title: 'TestFlight / Play Internal Track Deployment',
+        description: 'Build compilation, store compliance checklist verification, and staging distribution.',
+        included: true,
+        revisions: 1,
+        slaDays: 2,
+        estimatedHours: 25,
+        price: 2500,
+        exclusions: 'App Store review rejection appeals arising from Client business model.',
+        status: 'Defined'
+      }
+    ],
+    milestones: [
+      { name: 'Commencement Retainer', percentage: 40, trigger: 'Agreement execution' },
+      { name: 'TestFlight Release Build', percentage: 30, trigger: 'Delivery of working TestFlight invite' },
+      { name: 'Production Build Transfer', percentage: 30, trigger: 'App binary handoff and store submission readiness' }
+    ],
+    clauses: [
+      'ip-upon-payment',
+      'change-order-mandate',
+      'revisions-cap',
+      'client-delay-sla',
+      'late-payment-interest',
+      'third-party-expenses'
+    ]
+  },
+  {
+    id: 'consulting',
+    name: 'Technical Advisory & Architecture Audit',
+    category: 'Consulting',
+    summary: 'Senior engineering infrastructure audit, security vulnerability assessment, and modernization roadmap.',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 4800,
+    hourlyRate: 200,
+    paymentTerms: '100% upfront retainer',
+    deliverables: [
+      {
+        id: 'del-501',
+        title: 'Codebase & Cloud Infrastructure Discovery',
+        description: 'Read-only audit of Git repository, AWS/GCP cloud topology, database queries, and CI/CD pipelines.',
+        included: true,
+        revisions: 1,
+        slaDays: 2,
+        estimatedHours: 12,
+        price: 2400,
+        exclusions: 'Writing production bug fix code or active DevOps refactoring.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-502',
+        title: 'Architecture Evaluation & Vulnerability Report',
+        description: 'Detailed written findings detailing bottleneck analysis, database indexing issues, and security flags.',
+        included: true,
+        revisions: 1,
+        slaDays: 3,
+        estimatedHours: 8,
+        price: 1600,
+        exclusions: 'Formal SOC2 certification auditing.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-503',
+        title: 'Executive Presentation & Q&A Session (90 Min)',
+        description: 'Virtual presentation with engineering leadership walking through priority roadmap recommendations.',
+        included: true,
+        revisions: 0,
+        slaDays: 2,
+        estimatedHours: 4,
+        price: 800,
+        exclusions: 'Additional recurring weekly standup attendance.',
+        status: 'Defined'
+      }
+    ],
+    milestones: [
+      { name: 'Full Advisory Retainer', percentage: 100, trigger: 'Due upon execution before audit scheduling' }
+    ],
+    clauses: [
+      'ip-upon-payment',
+      'change-order-mandate',
+      'client-delay-sla',
+      'third-party-expenses'
+    ]
+  },
+  {
+    id: 'custom',
+    name: 'Custom Project SOW',
+    category: 'Custom',
+    summary: 'Blank slate configured with baseline protective clauses and customizable deliverable matrix.',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 5000,
+    hourlyRate: 150,
+    paymentTerms: '50% advance deposit, 50% on final milestone delivery',
+    deliverables: [
+      {
+        id: 'del-601',
+        title: 'Core Deliverable 01',
+        description: 'Define clear technical or creative specifications.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 20,
+        price: 2500,
+        exclusions: 'Define explicit out-of-scope boundaries.',
+        status: 'Defined'
+      },
+      {
+        id: 'del-602',
+        title: 'Core Deliverable 02',
+        description: 'Define acceptance parameters and delivery format.',
+        included: true,
+        revisions: 2,
+        slaDays: 3,
+        estimatedHours: 20,
+        price: 2500,
+        exclusions: 'Define explicit out-of-scope boundaries.',
+        status: 'Defined'
+      }
+    ],
+    milestones: [
+      { name: 'Initial Deposit', percentage: 50, trigger: 'Execution of agreement' },
+      { name: 'Final Acceptance', percentage: 50, trigger: 'Delivery of completed work' }
+    ],
+    clauses: [
+      'ip-upon-payment',
+      'change-order-mandate',
+      'revisions-cap'
+    ]
+  }
+];
+
+// --- js/clauses.js ---
+/**
+ * ScopeLock Protective Clauses Library
+ * Professional contractual provisions with plain-English rationales and risk tags.
+ * Drafting aid — have qualified counsel review for your specific jurisdiction.
+ */
+
+window.ScopeLockClauses = [
+  {
+    id: 'ip-upon-payment',
+    title: 'Intellectual Property Transfer Contingent on Final Payment',
+    category: 'IP',
+    riskMitigated: 'Client taking assets, staging builds, or source code to a cheaper vendor without settling final milestone invoices.',
+    plainEnglish: 'The client only legally owns the work after every single invoice is paid in full. If they cancel early or default, you retain 100% of the copyright.',
+    contractLanguage: 'All right, title, and interest in and to the final Deliverables created by Contractor under this Statement of Work shall transfer to Client strictly upon Contractor’s receipt of all outstanding fees, invoices, and expenses in full cleared funds. Prior to full satisfaction of all payments due, Contractor retains sole and exclusive intellectual property rights, and Client is granted solely a revocable, non-exclusive internal evaluation license.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'change-order-mandate',
+    title: 'Mandatory Written Change Order Protocol',
+    category: 'Change Orders',
+    riskMitigated: 'Informal Slack, WhatsApp, or email requests accumulating into dozens of uncompensated hours and disputed timelines.',
+    plainEnglish: 'Any request outside the deliverable matrix requires an executed written Change Order with agreed fees and timeline extensions before any work begins.',
+    contractLanguage: 'Any alteration, addition, or deviation from the specific Deliverables, specifications, or assumptions listed in this Statement of Work shall constitute a "Scope Modification." Contractor is under no obligation to commence or perform work on any Scope Modification until both Parties have executed a formal written Change Order specifying the additional compensation (billed at Contractor’s standard rate or mutually agreed fixed fee) and any resulting delivery schedule adjustment.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'revisions-cap',
+    title: 'Consolidated Revision Rounds & Acceptance Window',
+    category: 'Revisions',
+    riskMitigated: 'Endless piecemeal feedback emails and subjective perfectionism dragging projects on for months.',
+    plainEnglish: 'Revisions must be delivered in consolidated batches within 5 business days, up to the defined numeric limit. After that, work is deemed accepted.',
+    contractLanguage: 'Client shall be entitled solely to the number of revision rounds explicitly specified per Deliverable. A "revision round" requires Client to compile and deliver a unified, single, written feedback document. Piecemeal comments shall not be processed. Client shall have five (5) business days following Deliverable submission to provide feedback; failure to provide feedback within said period shall constitute irrevocable and deemed acceptance of the Deliverable.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'client-delay-sla',
+    title: 'Client Inaction & Dormancy Restart Fee',
+    category: 'Delays',
+    riskMitigated: 'Ghosting clients who vanish for weeks, then reappear demanding immediate weekend completion when your calendar is fully booked.',
+    plainEnglish: 'If the client goes silent for more than 10 business days, the project pauses, deadlines are reset, and a 10% re-activation fee applies to resume.',
+    contractLanguage: 'In the event Client fails to provide required approvals, assets, feedback, or access credentials for a period exceeding ten (10) consecutive business days, the Project shall be designated "Dormant." Contractor reserves the right to reassign personnel and reschedule completion dates based on subsequent studio availability. Re-activating a Dormant project shall incur a mandatory Administrative Re-scheduling Fee equal to 10% of total project value.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'late-payment-interest',
+    title: 'Late Payment Penalty & Immediate Production Suspension',
+    category: 'Payments',
+    riskMitigated: 'Waiting 60 to 90 days for payment while being expected to continue active production work under pressure.',
+    plainEnglish: 'Invoices unpaid after 7 days accrue 1.5% monthly interest, and all active production halts until payment clears.',
+    contractLanguage: 'Invoices are strictly due Net-7 days from transmission date unless otherwise agreed in writing. Outstanding balances after seven (7) days shall accrue interest at the statutory rate of 1.5% per month (or the maximum allowed by law). Contractor reserves the right to immediately suspend all active production, staging server hosting, and milestone deliverables without liability if any invoice remains delinquent for more than five (5) days.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'acceptance-criteria',
+    title: 'Objective Technical Acceptance Standard',
+    category: 'Acceptance',
+    riskMitigated: 'Subjective client rejection ("I will know it when I see it") despite conforming to functional specs.',
+    plainEnglish: 'Deliverables are judged strictly against the written specifications in the matrix, not arbitrary personal tastes.',
+    contractLanguage: 'Acceptance of Deliverables shall be evaluated strictly and exclusively against the objective technical and design criteria set forth in this Statement of Work. Subjective dissatisfaction not grounded in deviations from said specifications shall not constitute valid grounds for rejection, non-payment, or additional unpaid revision cycles.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'third-party-expenses',
+    title: 'Client Liability for Third-Party API & SaaS Expenses',
+    category: 'Third Parties',
+    riskMitigated: 'Contractor having to pay out-of-pocket for expensive cloud hosting, font licenses, or API tiers.',
+    plainEnglish: 'The client must pay directly for all hosting, domain registration, font licenses, and third-party SaaS charges.',
+    contractLanguage: 'All costs associated with third-party software, cloud infrastructure (e.g., AWS, GCP, Vercel), font licenses, stock photography, payment gateway fees, and transactional messaging APIs are the sole responsibility of Client and shall be billed directly to Client account credentials or reimbursed immediately upon invoice.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'client-supplied-content',
+    title: 'Timely Content & Asset Handoff Mandate',
+    category: 'Client Responsibilities',
+    riskMitigated: 'Project delays caused by missing client copy, brand photography, or database credentials.',
+    plainEnglish: 'If the client delays providing necessary text, logos, or API keys, delivery milestones automatically push back by the same duration.',
+    contractLanguage: 'Contractor’s performance timeline is strictly contingent upon Client providing all required copy, high-resolution imagery, brand guidelines, and third-party access credentials within three (3) business days of kickoff. Any delay by Client shall automatically extend all subsequent delivery milestones on a day-for-day basis.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'kill-fee-graduated',
+    title: 'Graduated Early Termination & Kill Fee',
+    category: 'Scope',
+    riskMitigated: 'Client cancelling on short notice after you cleared your calendar and turned away other paying work.',
+    plainEnglish: 'If the client cancels early, they forfeit deposits, pay for all work completed to date, plus a 20% capacity compensation fee.',
+    contractLanguage: 'If Client terminates this Agreement for convenience, Client shall forfeit all non-refundable retainers and deposits, and shall immediately remit payment for: (a) 100% of all milestones reached; (b) pro-rata compensation for hours spent on work-in-progress; plus (c) an early termination fee equal to twenty percent (20%) of the remaining unbilled contract balance to compensate for reserved capacity.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  },
+  {
+    id: 'portfolio-display',
+    title: 'Public Attribution & Portfolio Rights',
+    category: 'IP',
+    riskMitigated: 'Clients forbidding you from showcasing work you created in your portfolio or case studies.',
+    plainEnglish: 'You maintain the right to display the finished designs or code in your portfolio once the client launches publicly.',
+    contractLanguage: 'Contractor retains the perpetual, worldwide, non-exclusive right to display, describe, and link to the completed Deliverables in Contractor’s portfolio, website, marketing materials, and industry awards, provided that no Client confidential information or unreleased proprietary trade secrets are disclosed.',
+    disclaimer: 'Drafting aid — have counsel review for your jurisdiction.'
+  }
+];
+
+// --- js/calculations.js ---
+/**
+ * ScopeLock Calculation & Financial Modeling Utilities
+ */
+
+window.ScopeLockCalc = {
+  formatMoney: function(amount, symbol = '$') {
+    const num = Math.round(Number(amount) || 0);
+    return `${symbol}${num.toLocaleString('en-US')}`;
+  },
+
+  calculateLeakage: function(params) {
+    const projectValue = Number(params.projectValue) || 6000;
+    const projectsPerYear = Number(params.projectsPerYear) || 8;
+    const includedRevisions = Number(params.includedRevisions) || 2;
+    const actualRevisions = Number(params.actualRevisions) || 5;
+    const avgHoursPerRevision = Number(params.avgHoursPerRevision) || 4;
+    const hourlyRate = Number(params.hourlyRate) || 125;
+
+    const excessRevisionsPerProject = Math.max(0, actualRevisions - includedRevisions);
+    const unbilledHoursPerProject = excessRevisionsPerProject * avgHoursPerRevision;
+    const annualUnbilledHours = unbilledHoursPerProject * projectsPerYear;
+    const annualRevenueLeakage = annualUnbilledHours * hourlyRate;
+    const grossAnnualRevenue = projectValue * projectsPerYear;
+    const totalPotentialBilling = grossAnnualRevenue + annualRevenueLeakage;
+    const marginLossPercent = totalPotentialBilling > 0 ? Math.round((annualRevenueLeakage / totalPotentialBilling) * 100) : 0;
+
+    return {
+      grossAnnualRevenue,
+      annualUnbilledHours,
+      annualRevenueLeakage,
+      marginLossPercent,
+      potentialRecoveredRevenue: annualRevenueLeakage,
+      unbilledHoursPerProject
+    };
+  },
+
+  calculateMilestones: function(totalFee, milestones) {
+    if (!Array.isArray(milestones)) return [];
+    return milestones.map(m => {
+      const pct = Number(m.percentage) || 0;
+      const amount = Math.round((totalFee * pct) / 100);
+      return {
+        ...m,
+        amount
+      };
+    });
+  },
+
+  aggregateDeliverables: function(deliverables) {
+    if (!Array.isArray(deliverables)) return { totalHours: 0, totalPrice: 0 };
+    return deliverables.reduce((acc, d) => {
+      if (d.included !== false) {
+        acc.totalHours += Number(d.estimatedHours) || 0;
+        acc.totalPrice += Number(d.price) || 0;
+      }
+      return acc;
+    }, { totalHours: 0, totalPrice: 0 });
+  }
+};
+
+// --- js/storage.js ---
+/**
+ * ScopeLock Local Storage & Serialization Engine
+ * Handles zero-telemetry local persistence, JSON export, and data validation.
+ */
+
+window.ScopeLockStorage = {
+  STORAGE_KEY: 'scopelock_project_v2',
+  SIGNOFF_KEY: 'scopelock_signoff_v2',
+
+  save: function(projectData) {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(projectData));
+      return true;
+    } catch (e) {
+      console.warn('ScopeLock Storage Save Warning:', e);
+      return false;
+    }
+  },
+
+  load: function() {
+    try {
+      const data = localStorage.getItem(this.STORAGE_KEY);
+      if (!data) return null;
+      const parsed = JSON.parse(data);
+      if (parsed && parsed.deliverables && Array.isArray(parsed.deliverables)) {
+        return parsed;
+      }
+    } catch (e) {
+      console.warn('ScopeLock Storage Load Warning:', e);
+    }
+    return null;
+  },
+
+  exportJSON: function(projectData) {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `scopelock-${(projectData.projectName || 'project').toLowerCase().replace(/\s+/g, '-')}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  },
+
+  importJSON: function(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        if (parsed && parsed.deliverables) {
+          callback(null, parsed);
+        } else {
+          callback(new Error('Invalid ScopeLock project schema'));
+        }
+      } catch (err) {
+        callback(err);
+      }
+    };
+    reader.readAsText(file);
+  },
+
+  saveSignoff: function(signoffData) {
+    try {
+      localStorage.setItem(this.SIGNOFF_KEY, JSON.stringify(signoffData));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  },
+
+  loadSignoff: function() {
+    try {
+      const data = localStorage.getItem(this.SIGNOFF_KEY);
+      return data ? JSON.parse(data) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+};
+
+// --- js/risk-engine.js ---
+/**
+ * ScopeLock Rules-Based Contract Risk Auditor
+ * Real-time heuristic evaluation of contract loopholes, scope exposure, and legal defense readiness.
+ * Includes automated 1-click remedy actions.
+ */
+
+window.ScopeLockRiskEngine = {
+  audit: function(project) {
+    let score = 100;
+    const checks = [];
+
+    const deliverables = Array.isArray(project.deliverables) ? project.deliverables : [];
+    const clauses = Array.isArray(project.clauses) ? project.clauses : [];
+
+    // Check 1: Empty or minimal deliverables
+    if (deliverables.length === 0) {
+      score -= 40;
+      checks.push({
+        passed: false,
+        severity: 'CRITICAL',
+        impact: -40,
+        title: 'Zero Deliverables Specified',
+        message: 'A Statement of Work with no line-item deliverables leaves scope completely open-ended and unshielded.',
+        remedy: 'Add at least one itemized deliverable with specifications.',
+        fixAction: 'add_deliverable'
+      });
+    }
+
+    // Check 2: Unlimited Revisions or Missing Revision Limits
+    let uncappedRevisions = 0;
+    let missingRevisionLimits = 0;
+    deliverables.forEach(d => {
+      const rev = Number(d.revisions);
+      const text = `${d.title || ''} ${d.description || ''}`.toLowerCase();
+      if (/unlimited\s+rev/i.test(text) || rev > 5) {
+        uncappedRevisions++;
+      } else if (isNaN(rev) || rev === 0 || d.revisions === null || d.revisions === undefined) {
+        missingRevisionLimits++;
+      }
+    });
+
+    if (uncappedRevisions > 0) {
+      score -= 30;
+      checks.push({
+        passed: false,
+        severity: 'CRITICAL',
+        impact: -30,
+        title: 'Runaway Revision Exposure',
+        message: `${uncappedRevisions} deliverable(s) specify unlimited or excessive revision cycles (>5 rounds). This causes catastrophic project timeline slips.`,
+        remedy: 'Cap revisions strictly to 2 consolidated rounds per milestone.',
+        fixAction: 'cap_revisions'
+      });
+    } else if (missingRevisionLimits > 0) {
+      score -= 15;
+      checks.push({
+        passed: false,
+        severity: 'HIGH',
+        impact: -15,
+        title: 'Undefined Revision Limits',
+        message: `${missingRevisionLimits} deliverable(s) have undefined revision limits. Clients will assume feedback cycles are limitless.`,
+        remedy: 'Assign a numeric revision cap (2 rounds) to every deliverable.',
+        fixAction: 'cap_revisions'
+      });
+    } else {
+      checks.push({
+        passed: true,
+        severity: 'LOW',
+        impact: 0,
+        title: 'Revision Limits Quantified',
+        message: 'All deliverables have explicit, numeric revision bounds.'
+      });
+    }
+
+    // Check 3: Missing Out-of-Scope Exclusions
+    let missingExclusions = 0;
+    deliverables.forEach(d => {
+      if (!d.exclusions || d.exclusions.trim().length < 6) {
+        missingExclusions++;
+      }
+    });
+
+    if (missingExclusions > 0) {
+      score -= Math.min(25, missingExclusions * 8);
+      checks.push({
+        passed: false,
+        severity: 'HIGH',
+        impact: -(Math.min(25, missingExclusions * 8)),
+        title: 'Missing Scope Boundaries (Exclusions)',
+        message: `${missingExclusions} deliverable(s) do not define what is explicitly excluded. Clients routinely assume third-party licenses, cloud hosting, and data migrations are free.`,
+        remedy: 'Apply standard commercial exclusions to unshielded deliverables.',
+        fixAction: 'add_default_exclusions'
+      });
+    } else {
+      checks.push({
+        passed: true,
+        severity: 'LOW',
+        impact: 0,
+        title: 'Explicit Exclusions Defined',
+        message: 'Deliverables establish clear boundary exclusions.'
+      });
+    }
+
+    // Check 4: Review SLAs / Turnaround Windows
+    let missingSLA = 0;
+    deliverables.forEach(d => {
+      if (!d.slaDays || Number(d.slaDays) < 1) {
+        missingSLA++;
+      }
+    });
+
+    if (missingSLA > 0) {
+      score -= 15;
+      checks.push({
+        passed: false,
+        severity: 'MODERATE',
+        impact: -15,
+        title: 'Undefined Client Review Window',
+        message: `${missingSLA} deliverable(s) lack a defined turnaround SLA. Clients can take weeks to review without project status impact.`,
+        remedy: 'Enforce standard 3 business day client review turnaround SLA.',
+        fixAction: 'set_standard_sla'
+      });
+    } else {
+      checks.push({
+        passed: true,
+        severity: 'LOW',
+        impact: 0,
+        title: 'Turnaround SLAs Activated',
+        message: 'Every deliverable includes a defined acceptance window.'
+      });
+    }
+
+    // Check 5: Essential Legal Defenses (Protective Clauses)
+    const hasIP = clauses.includes('ip-upon-payment');
+    const hasChangeOrder = clauses.includes('change-order-mandate');
+    const hasLatePayment = clauses.includes('late-payment-interest');
+    const hasClientDelay = clauses.includes('client-delay-sla');
+
+    if (!hasIP) {
+      score -= 20;
+      checks.push({
+        passed: false,
+        severity: 'CRITICAL',
+        impact: -20,
+        title: 'Missing IP Contingency Protection',
+        message: 'Without an IP-contingent clause, copyright ownership may pass upon creation. Clients can legally use your code or designs even if they default on final payment.',
+        remedy: 'Incorporate "IP Transfer Contingent on Final Payment" clause.',
+        fixAction: 'add_ip_clause'
+      });
+    } else {
+      checks.push({
+        passed: true,
+        severity: 'LOW',
+        impact: 0,
+        title: 'IP Ownership Shielded',
+        message: 'IP rights remain with contractor until 100% of invoices clear.'
+      });
+    }
+
+    if (!hasChangeOrder) {
+      score -= 15;
+      checks.push({
+        passed: false,
+        severity: 'HIGH',
+        impact: -15,
+        title: 'No Change Order Protocol',
+        message: 'Without an express Change Order mechanism, out-of-scope requests blur into original deliverables without budget authorization.',
+        remedy: 'Incorporate "Mandatory Written Change Order Protocol" clause.',
+        fixAction: 'add_co_clause'
+      });
+    } else {
+      checks.push({
+        passed: true,
+        severity: 'LOW',
+        impact: 0,
+        title: 'Change-Order Protocol Enforced',
+        message: 'All scope expansions require executed addenda.'
+      });
+    }
+
+    if (!hasLatePayment) {
+      score -= 10;
+      checks.push({
+        passed: false,
+        severity: 'MODERATE',
+        impact: -10,
+        title: 'No Late Payment Recourse',
+        message: 'Missing standard interest and work-suspension rights if client invoices fall delinquent.',
+        remedy: 'Incorporate "Late Payment Penalty & Work Suspension" clause.',
+        fixAction: 'add_late_clause'
+      });
+    }
+
+    if (!hasClientDelay) {
+      score -= 10;
+      checks.push({
+        passed: false,
+        severity: 'MODERATE',
+        impact: -10,
+        title: 'No Dormancy Pause Clause',
+        message: 'If the client ghosts for weeks, your studio schedule is left in limbo without rescheduling fee protection.',
+        remedy: 'Incorporate "Client Inaction & Dormancy Restart Fee" clause.',
+        fixAction: 'add_dormancy_clause'
+      });
+    }
+
+    // Clamp score
+    score = Math.max(12, Math.min(100, score));
+
+    let riskCategory = 'LOW RISK';
+    let statusClass = 'badge-brand';
+    let scoreColor = 'var(--color-brand)';
+
+    if (score < 50) {
+      riskCategory = 'CRITICAL EXPOSURE';
+      statusClass = 'badge-danger';
+      scoreColor = 'var(--color-danger)';
+    } else if (score < 70) {
+      riskCategory = 'HIGH RISK';
+      statusClass = 'badge-danger';
+      scoreColor = 'var(--color-danger)';
+    } else if (score < 85) {
+      riskCategory = 'MODERATE RISK';
+      statusClass = 'badge-warning';
+      scoreColor = 'var(--color-warning)';
+    }
+
+    return {
+      score,
+      category: riskCategory,
+      statusClass,
+      scoreColor,
+      checks
+    };
+  },
+
+  applyFix: function(fixAction) {
+    const project = window.ScopeLockState.project;
+    let message = 'Contract protection updated';
+
+    switch (fixAction) {
+      case 'cap_revisions':
+        (project.deliverables || []).forEach(d => {
+          d.revisions = 2;
+          d.title = d.title.replace(/unlimited\s+revisions?/gi, 'Capped Revisions (2 Rounds)');
+          d.description = d.description.replace(/unlimited\s+revisions?/gi, '2 consolidated rounds');
+        });
+        message = 'All revisions capped strictly to 2 rounds';
+        break;
+
+      case 'add_default_exclusions':
+        (project.deliverables || []).forEach(d => {
+          if (!d.exclusions || d.exclusions.trim().length < 6) {
+            d.exclusions = 'Third-party API licensing, legacy database migration, custom 3D WebGL assets';
+          }
+        });
+        message = 'Standard commercial exclusions assigned';
+        break;
+
+      case 'set_standard_sla':
+        (project.deliverables || []).forEach(d => {
+          if (!d.slaDays || Number(d.slaDays) < 1) {
+            d.slaDays = 3;
+          }
+        });
+        message = 'Standard 3-day turnaround SLAs established';
+        break;
+
+      case 'add_ip_clause':
+        window.ScopeLockState.toggleClause('ip-upon-payment', true);
+        message = 'IP Contingency clause activated';
+        break;
+
+      case 'add_co_clause':
+        window.ScopeLockState.toggleClause('change-order-mandate', true);
+        message = 'Mandatory Change Order protocol activated';
+        break;
+
+      case 'add_late_clause':
+        window.ScopeLockState.toggleClause('late-payment-interest', true);
+        message = 'Late payment interest clause activated';
+        break;
+
+      case 'add_dormancy_clause':
+        window.ScopeLockState.toggleClause('client-delay-sla', true);
+        message = 'Client dormancy pause clause activated';
+        break;
+
+      case 'add_deliverable':
+        window.ScopeLockState.addDeliverable({
+          title: 'Core System Deliverable 01',
+          description: 'Provide detailed functional specifications.',
+          revisions: 2,
+          slaDays: 3,
+          exclusions: 'Third-party infrastructure licensing'
+        });
+        message = 'Standard deliverable milestone created';
+        break;
+    }
+
+    if (window.ScopeLockState && typeof window.ScopeLockState.save === 'function') {
+      window.ScopeLockState.save();
+    }
+    if (window.ScopeLockUI) {
+      if (typeof window.ScopeLockUI.renderStudio === 'function') window.ScopeLockUI.renderStudio();
+      if (typeof window.ScopeLockUI.renderDocument === 'function') window.ScopeLockUI.renderDocument();
+      if (typeof window.ScopeLockUI.showToast === 'function') window.ScopeLockUI.showToast(message, 'success');
+    }
+  }
+};
+
+// --- js/change-orders.js ---
+/**
+ * ScopeLock Change Order Engine
+ * Generates binding addenda for scope modifications with automatic cost & deadline calculations.
+ */
+
+window.ScopeLockChangeOrders = {
+  create: function(params, project) {
+    const hours = Number(params.additionalHours) || 0;
+    const rate = Number(params.hourlyRate) || (Number(project.hourlyRate) || 150);
+    const fixed = Number(params.additionalFixedCost) || 0;
+    const cost = (hours * rate) + fixed;
+    const days = Number(params.additionalDays) || 0;
+
+    const baseDate = project.endDate ? new Date(project.endDate) : new Date();
+    const newDeadline = new Date(baseDate.getTime() + (days * 24 * 60 * 60 * 1000));
+
+    return {
+      id: 'CO-' + (project.changeOrders ? project.changeOrders.length + 1 : 1).toString().padStart(3, '0'),
+      title: params.title || 'Scope Modification Addendum',
+      reason: params.reason || 'Client-requested feature expansion beyond agreed Deliverables Matrix.',
+      requestedDate: params.requestedDate || new Date().toISOString().split('T')[0],
+      additionalHours: hours,
+      hourlyRate: rate,
+      additionalFixedCost: fixed,
+      totalCost: cost,
+      additionalDays: days,
+      newDeadline: newDeadline.toISOString().split('T')[0],
+      status: 'Pending Client Execution'
+    };
+  },
+
+  renderDocument: function(co, project) {
+    const symbol = project.symbol || '$';
+    return `
+      <div class="paper-document change-order-doc" id="co-doc-${co.id}">
+        <div class="doc-header-band">
+          <div>
+            <h2 class="doc-title-main">CHANGE ORDER ADDENDUM</h2>
+            <div class="doc-subhead-text">Addendum #${co.id} to Statement of Work: ${project.projectName || 'Project'}</div>
+          </div>
+          <div style="text-align: right; font-size: 0.85rem;">
+            <div><strong>Date:</strong> ${co.requestedDate}</div>
+            <div><strong>Status:</strong> ${co.status}</div>
+          </div>
+        </div>
+
+        <div class="parties-grid">
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; font-weight: 700;">SERVICE PROVIDER</div>
+            <div style="font-weight: 700;">${project.studioName || 'Studio'}</div>
+            <div style="font-size: 0.82rem; color: #64748b;">${project.studioEmail || ''}</div>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; font-weight: 700;">CLIENT ORGANIZATION</div>
+            <div style="font-weight: 700;">${project.clientName || 'Client'}</div>
+            <div style="font-size: 0.82rem; color: #64748b;">${project.clientEmail || ''}</div>
+          </div>
+        </div>
+
+        <div class="doc-section-block">
+          <h3 class="doc-section-heading">1. SCOPE EXPANSION DESCRIPTION</h3>
+          <p><strong>Modification Summary:</strong> ${co.title}</p>
+          <p><strong>Operational Justification:</strong> ${co.reason}</p>
+        </div>
+
+        <div class="doc-section-block">
+          <h3 class="doc-section-heading">2. FINANCIAL & SCHEDULE ADJUSTMENTS</h3>
+          <table class="doc-legal-table">
+            <thead>
+              <tr>
+                <th>Adjustment Parameter</th>
+                <th>Quantity / Metric</th>
+                <th>Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Additional Professional Hours</td>
+                <td>${co.additionalHours} billable hours @ ${symbol}${co.hourlyRate}/hr</td>
+                <td>${symbol}${(co.additionalHours * co.hourlyRate).toLocaleString()}</td>
+              </tr>
+              ${co.additionalFixedCost > 0 ? `
+              <tr>
+                <td>Fixed Fee / Asset Licenses</td>
+                <td>Third-party or dedicated resources</td>
+                <td>${symbol}${co.additionalFixedCost.toLocaleString()}</td>
+              </tr>
+              ` : ''}
+              <tr>
+                <td><strong>Total Additional Compensation</strong></td>
+                <td>Due upon execution of this Change Order</td>
+                <td><strong>${symbol}${co.totalCost.toLocaleString()} (${project.currency || 'USD'})</strong></td>
+              </tr>
+              <tr>
+                <td>Schedule Deadline Extension</td>
+                <td>+${co.additionalDays} business days to project calendar</td>
+                <td>New Target Date: <strong>${co.newDeadline}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="doc-section-block">
+          <h3 class="doc-section-heading">3. AUTHORIZATION & INCORPORATION</h3>
+          <p style="font-size: 0.82rem; color: #475569;">
+            This Change Order modifies the original Statement of Work referenced above. All other terms, conditions, warranties, and protective clauses of the original agreement remain in full force and effect.
+          </p>
+        </div>
+
+        <div class="doc-signatures-grid">
+          <div>
+            <div class="signature-line"></div>
+            <div style="font-weight: 700; font-size: 0.85rem;">Authorized Service Provider (${project.studioName || 'Studio'})</div>
+            <div style="font-size: 0.78rem; color: #64748b;">Date: ${co.requestedDate}</div>
+          </div>
+          <div>
+            <div class="signature-line"></div>
+            <div style="font-weight: 700; font-size: 0.85rem;">Client Acceptance (${project.clientName || 'Client'})</div>
+            <div style="font-size: 0.78rem; color: #64748b;">Date: ___________________________</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+};
+
+// --- js/document.js ---
+/**
+ * ScopeLock Document Preview & Legal Output Formatter
+ * Generates print-ready Statements of Work and Markdown exports.
+ */
+
+window.ScopeLockDocument = {
+  renderHTML: function(project) {
+    const symbol = project.symbol || '$';
+    const totalFee = Number(project.totalFee) || 0;
+    const deliverables = Array.isArray(project.deliverables) ? project.deliverables : [];
+    const milestones = Array.isArray(project.milestones) ? project.milestones : [];
+    const clauses = Array.isArray(project.clauses) ? project.clauses : [];
+
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    return `
+      <div class="paper-document" id="rendered-sow-doc">
+        <!-- Document Header -->
+        <div class="doc-header-band">
+          <div>
+            <h1 class="doc-title-main">STATEMENT OF WORK</h1>
+            <div class="doc-subhead-text">Binding Deliverables Schedule & Scope Protection Addendum</div>
+          </div>
+          <div style="text-align: right; font-size: 0.82rem; color: #475569;">
+            <div><strong>Document Date:</strong> ${today}</div>
+            <div><strong>Status:</strong> Legally Structured</div>
+            <div><strong>Reference:</strong> SL-${Date.now().toString(36).toUpperCase().slice(-6)}</div>
+          </div>
+        </div>
+
+        <!-- Contracting Parties -->
+        <div class="parties-grid">
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; font-weight: 700; letter-spacing: 0.05em;">SERVICE PROVIDER</div>
+            <div style="font-weight: 750; font-size: 1.05rem;">${escapeHTML(project.studioName || 'Studio Name')}</div>
+            <div style="font-size: 0.85rem; color: #64748b;">${escapeHTML(project.studioEmail || 'provider@studio.com')}</div>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; font-weight: 700; letter-spacing: 0.05em;">CLIENT ORGANIZATION</div>
+            <div style="font-weight: 750; font-size: 1.05rem;">${escapeHTML(project.clientName || 'Client Name')}</div>
+            <div style="font-size: 0.85rem; color: #64748b;">${escapeHTML(project.clientEmail || 'procurement@client.com')}</div>
+          </div>
+        </div>
+
+        <!-- Section 1: Overview & Compensation -->
+        <div class="doc-section-block">
+          <h2 class="doc-section-heading">1. PROJECT PURPOSE & FIXED COMPENSATION</h2>
+          <p><strong>Project Title:</strong> ${escapeHTML(project.projectName || 'Unspecified Project')}</p>
+          <p><strong>Timeline:</strong> ${project.startDate || 'Immediate'} through ${project.endDate || 'Target Completion'}</p>
+          <p>
+            <strong>Agreed Project Fee:</strong> ${symbol}${totalFee.toLocaleString()} (${project.currency || 'USD'}).
+            Additional out-of-scope work requested by Client shall be executed via written Change Order billed at Contractor's standard rate of <strong>${symbol}${project.hourlyRate || 150}/hour</strong>.
+          </p>
+          <p><strong>Payment Terms:</strong> ${escapeHTML(project.paymentTerms || 'Standard Milestone Releases')}</p>
+        </div>
+
+        <!-- Section 2: Deliverables Matrix -->
+        <div class="doc-section-block">
+          <h2 class="doc-section-heading">2. ITEMIZED DELIVERABLES MATRIX & BOUNDARIES</h2>
+          <table class="doc-legal-table">
+            <thead>
+              <tr>
+                <th style="width: 5%;">#</th>
+                <th style="width: 25%;">Deliverable</th>
+                <th style="width: 40%;">Acceptance Specifications</th>
+                <th style="width: 15%;">Revision Cap</th>
+                <th style="width: 15%;">Review SLA</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${deliverables.length === 0 ? `
+                <tr><td colspan="5" style="text-align: center; color: #94a3b8;">No deliverables specified.</td></tr>
+              ` : deliverables.map((d, i) => `
+                <tr>
+                  <td><strong>0${i+1}</strong></td>
+                  <td>
+                    <div style="font-weight: 700; color: #0f172a;">${escapeHTML(d.title)}</div>
+                    <div style="font-size: 0.75rem; color: #b45309; margin-top: 4px;">
+                      <strong>Excludes:</strong> ${escapeHTML(d.exclusions || 'None explicitly defined')}
+                    </div>
+                  </td>
+                  <td>${escapeHTML(d.description)}</td>
+                  <td>${d.revisions || 2} consolidated rounds</td>
+                  <td>${d.slaDays || 3} business days</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 3: Milestone Payment Schedule -->
+        <div class="doc-section-block">
+          <h2 class="doc-section-heading">3. MILESTONE INVOICING SCHEDULE</h2>
+          <table class="doc-legal-table">
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Milestone Deliverable</th>
+                <th>Payment Release Trigger</th>
+                <th>Percentage</th>
+                <th>Amount Due</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${milestones.map((m, i) => `
+                <tr>
+                  <td>Phase 0${i+1}</td>
+                  <td><strong>${escapeHTML(m.name)}</strong></td>
+                  <td>${escapeHTML(m.trigger)}</td>
+                  <td>${m.percentage}%</td>
+                  <td><strong>${symbol}${Math.round(totalFee * (m.percentage/100)).toLocaleString()}</strong></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section 4: Protective Clauses -->
+        <div class="doc-section-block">
+          <h2 class="doc-section-heading">4. ENFORCEABLE PROTECTIVE CLAUSES</h2>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            ${clauses.map(cId => {
+              const c = window.ScopeLockClauses.find(item => item.id === cId);
+              if (!c) return '';
+              return `
+                <div style="background: #f8fafc; border-left: 3px solid #10b981; padding: 10px 14px; border-radius: 0 4px 4px 0;">
+                  <div style="font-weight: 750; font-size: 0.88rem; color: #065f46; margin-bottom: 4px;">
+                    § ${escapeHTML(c.title)}
+                  </div>
+                  <div style="font-size: 0.82rem; color: #334155; line-height: 1.55;">
+                    ${escapeHTML(c.contractLanguage)}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- Section 5: Signature Execution -->
+        <div class="doc-signatures-grid">
+          <div>
+            <div class="signature-line"></div>
+            <div style="font-weight: 750; font-size: 0.88rem;">Authorized Signature (${escapeHTML(project.studioName || 'Service Provider')})</div>
+            <div style="font-size: 0.78rem; color: #64748b;">Date: ${today}</div>
+          </div>
+          <div>
+            <div class="signature-line"></div>
+            <div style="font-weight: 750; font-size: 0.88rem;">Authorized Client Acceptance (${escapeHTML(project.clientName || 'Client Organization')})</div>
+            <div style="font-size: 0.78rem; color: #64748b;">Date: ____________________________________</div>
+          </div>
+        </div>
+
+        <!-- Legal Disclaimer Note -->
+        <div style="margin-top: 36px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-size: 0.72rem; color: #94a3b8; text-align: center;">
+          ScopeLock drafting aid. Requirements and enforceability vary across commercial jurisdictions. Consider review by qualified counsel.
+        </div>
+      </div>
+    `;
+  },
+
+  toMarkdown: function(project) {
+    const symbol = project.symbol || '$';
+    let md = `# STATEMENT OF WORK (SOW)\n\n`;
+    md += `**Project:** ${project.projectName || 'Project'}\n`;
+    md += `**Client:** ${project.clientName || 'Client'} (${project.clientEmail || 'email'})\n`;
+    md += `**Provider:** ${project.studioName || 'Provider'} (${project.studioEmail || 'email'})\n`;
+    md += `**Total Fixed Fee:** ${symbol}${project.totalFee} ${project.currency} (Change orders billed at ${symbol}${project.hourlyRate}/hr)\n\n`;
+
+    md += `## 1. Deliverables Matrix & Boundary Exclusions\n\n`;
+    (project.deliverables || []).forEach((d, i) => {
+      md += `### ${i+1}. ${d.title}\n`;
+      md += `- **Scope:** ${d.description}\n`;
+      md += `- **Revision Limit:** ${d.revisions} consolidated rounds\n`;
+      md += `- **Review SLA:** ${d.slaDays} business days\n`;
+      md += `- **Exclusions:** ${d.exclusions || 'None'}\n\n`;
+    });
+
+    md += `## 2. Milestone Payment Schedule\n\n`;
+    (project.milestones || []).forEach((m, i) => {
+      const amt = Math.round((project.totalFee * m.percentage) / 100);
+      md += `- Phase ${i+1}: ${m.name} (${m.percentage}% = ${symbol}${amt}) [Trigger: ${m.trigger}]\n`;
+    });
+
+    md += `\n## 3. Protective Clauses\n\n`;
+    (project.clauses || []).forEach(cId => {
+      const c = window.ScopeLockClauses.find(x => x.id === cId);
+      if (c) {
+        md += `### ${c.title}\n${c.contractLanguage}\n\n`;
+      }
+    });
+
+    return md;
+  }
+};
+
+function escapeHTML(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// --- js/state.js ---
+/**
+ * ScopeLock Reactive State Store
+ * Manages active project model, change-order lifecycle, and pub/sub subscribers.
+ */
+
+window.ScopeLockState = (function() {
+  const defaultProject = {
+    projectName: 'Full-Stack SaaS Platform MVP',
+    clientName: 'HyperScale Systems, Inc.',
+    clientEmail: 'procurement@hyperscale.io',
+    studioName: 'Aero Digital Studio',
+    studioEmail: 'contracts@aerostudio.io',
+    projectType: 'Engineering',
+    currency: 'USD',
+    symbol: '$',
+    totalFee: 9500,
+    hourlyRate: 150,
+    startDate: '2026-10-01',
+    endDate: '2026-11-15',
+    paymentTerms: '50% deposit, 25% staging freeze, 25% production deployment',
+    deliverables: [],
+    milestones: [],
+    clauses: [],
+    changeOrders: [],
+    notes: 'All cloud hosting (AWS/Vercel) and third-party SaaS fees billed directly to Client.'
+  };
+
+  let state = {
+    activeTab: 'studio',
+    project: JSON.parse(JSON.stringify(defaultProject)),
+    clientSignoff: {
+      acceptedDeliverables: {},
+      signerName: '',
+      signerEmail: '',
+      signerTitle: '',
+      signedAt: null,
+      confirmed: false
+    }
+  };
+
+  const listeners = [];
+
+  function subscribe(fn) {
+    listeners.push(fn);
+    return () => {
+      const idx = listeners.indexOf(fn);
+      if (idx !== -1) listeners.splice(idx, 1);
+    };
+  }
+
+  function notify(event, payload) {
+    listeners.forEach(fn => {
+      try {
+        fn(event, payload, state);
+      } catch (err) {
+        console.error('State subscriber error:', err);
+      }
+    });
+  }
+
+  function save() {
+    window.ScopeLockStorage.save(state.project);
+    if (state.clientSignoff.signedAt) {
+      window.ScopeLockStorage.saveSignoff(state.clientSignoff);
+    }
+  }
+
+  function init() {
+    const loaded = window.ScopeLockStorage.load();
+    if (loaded && loaded.deliverables && loaded.deliverables.length) {
+      state.project = loaded;
+    } else {
+      // Load default preset
+      loadPreset('web-dev', false);
+    }
+
+    const signoff = window.ScopeLockStorage.loadSignoff();
+    if (signoff) {
+      state.clientSignoff = signoff;
+    }
+  }
+
+  function loadPreset(presetId, shouldNotify = true) {
+    const preset = window.ScopeLockPresets.find(p => p.id === presetId);
+    if (!preset) return;
+
+    state.project.projectName = preset.name;
+    state.project.projectType = preset.category;
+    state.project.currency = preset.currency;
+    state.project.symbol = preset.symbol;
+    state.project.totalFee = preset.totalFee;
+    state.project.hourlyRate = preset.hourlyRate;
+    state.project.paymentTerms = preset.paymentTerms;
+    state.project.deliverables = JSON.parse(JSON.stringify(preset.deliverables));
+    state.project.milestones = JSON.parse(JSON.stringify(preset.milestones));
+    state.project.clauses = [...preset.clauses];
+
+    save();
+    if (shouldNotify) notify('preset:loaded', preset);
+  }
+
+  function updateProjectField(field, value) {
+    state.project[field] = value;
+    save();
+    notify('project:updated', { field, value });
+  }
+
+  // Deliverables CRUD
+  function addDeliverable(item) {
+    const newItem = {
+      id: 'del-' + Date.now().toString(36),
+      title: item?.title || 'New Project Deliverable',
+      description: item?.description || 'Provide functional acceptance specifications.',
+      included: true,
+      revisions: item?.revisions !== undefined ? item.revisions : 2,
+      slaDays: item?.slaDays !== undefined ? item.slaDays : 3,
+      estimatedHours: item?.estimatedHours || 16,
+      price: item?.price || 2000,
+      exclusions: item?.exclusions || 'Define explicit boundary exclusions.',
+      status: 'Defined'
+    };
+    state.project.deliverables.push(newItem);
+    save();
+    notify('deliverable:added', newItem);
+    return newItem;
+  }
+
+  function updateDeliverable(id, field, value) {
+    const d = state.project.deliverables.find(item => item.id === id);
+    if (d) {
+      d[field] = value;
+      save();
+      notify('deliverable:updated', { id, field, value });
+    }
+  }
+
+  function deleteDeliverable(id) {
+    state.project.deliverables = state.project.deliverables.filter(item => item.id !== id);
+    save();
+    notify('deliverable:deleted', { id });
+  }
+
+  function duplicateDeliverable(id) {
+    const original = state.project.deliverables.find(item => item.id === id);
+    if (!original) return;
+    const copy = JSON.parse(JSON.stringify(original));
+    copy.id = 'del-' + Date.now().toString(36);
+    copy.title = `${copy.title} (Copy)`;
+    state.project.deliverables.push(copy);
+    save();
+    notify('deliverable:added', copy);
+  }
+
+  // Clauses toggles
+  function toggleClause(clauseId, enable) {
+    if (enable) {
+      if (!state.project.clauses.includes(clauseId)) state.project.clauses.push(clauseId);
+    } else {
+      state.project.clauses = state.project.clauses.filter(id => id !== clauseId);
+    }
+    save();
+    notify('clause:toggled', { clauseId, enable });
+  }
+
+  // Change Orders
+  function addChangeOrder(params) {
+    const co = window.ScopeLockChangeOrders.create(params, state.project);
+    if (!state.project.changeOrders) state.project.changeOrders = [];
+    state.project.changeOrders.unshift(co);
+    save();
+    notify('changeorder:added', co);
+    return co;
+  }
+
+  function updateChangeOrderStatus(id, newStatus) {
+    const co = (state.project.changeOrders || []).find(c => c.id === id);
+    if (co) {
+      co.status = newStatus;
+      save();
+      notify('changeorder:updated', co);
+    }
+  }
+
+  // Client Signoff
+  function signAgreement(signerDetails) {
+    state.clientSignoff = {
+      ...state.clientSignoff,
+      ...signerDetails,
+      signedAt: new Date().toISOString(),
+      confirmed: true
+    };
+    save();
+    notify('signoff:completed', state.clientSignoff);
+  }
+
+  return {
+    get state() { return state; },
+    get project() { return state.project; },
+    init,
+    subscribe,
+    save,
+    loadPreset,
+    updateProjectField,
+    addDeliverable,
+    updateDeliverable,
+    deleteDeliverable,
+    duplicateDeliverable,
+    toggleClause,
+    addChangeOrder,
+    updateChangeOrderStatus,
+    signAgreement
+  };
+})();
+
+// --- js/router.js ---
+/**
+ * ScopeLock Client-Side View Router
+ * Coordinates view panels, navigation states, deep hash links, and focus management.
+ */
+
+window.ScopeLockRouter = {
+  routes: ['home', 'studio', 'clauses', 'calculator', 'client-portal', 'faq'],
+
+  init: function() {
+    window.addEventListener('hashchange', () => {
+      this.handleHashChange();
+    });
+
+    // Check initial hash
+    if (window.location.hash) {
+      const route = window.location.hash.replace('#', '');
+      if (this.routes.includes(route)) {
+        this.navigate(route, false);
+      } else {
+        this.navigate('studio', false);
+      }
+    } else {
+      this.navigate('studio', false);
+    }
+  },
+
+  handleHashChange: function() {
+    const route = window.location.hash.replace('#', '');
+    if (this.routes.includes(route)) {
+      this.navigate(route, false);
+    }
+  },
+
+  navigate: function(routeId, updateHash = true) {
+    if (!this.routes.includes(routeId)) routeId = 'studio';
+
+    if (updateHash) {
+      window.location.hash = routeId;
+    }
+
+    // Toggle panels
+    document.querySelectorAll('.view-panel').forEach(panel => {
+      panel.classList.remove('active');
+    });
+
+    const targetPanel = document.getElementById(`view-${routeId}`);
+    if (targetPanel) {
+      targetPanel.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Update Nav Links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if (link.dataset.tab === routeId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    // Close mobile menu if open
+    const navMenu = document.getElementById('nav-menu');
+    if (navMenu && navMenu.classList.contains('open')) {
+      navMenu.classList.remove('open');
+    }
+
+    // Notify UI
+    if (window.ScopeLockUI && typeof window.ScopeLockUI.onRouteEnter === 'function') {
+      window.ScopeLockUI.onRouteEnter(routeId);
+    }
+  }
+};
+
+// --- js/ui.js ---
+/**
+ * ScopeLock Enhanced UI Renderer & Interaction Engine
+ * Renders views, reactive DOM updates, powers the Hero sandbox,
+ * 1-click legal remedies, workflow stepper, and change-order pitch copies.
+ */
+
+window.ScopeLockUI = {
+  init: function() {
+    this.bindHeroSandbox();
+    this.bindStudioInputs();
+    this.bindCalculator();
+    this.bindClauseSearch();
+    this.renderAll();
+
+    // Subscribe to state changes
+    window.ScopeLockState.subscribe(() => {
+      this.renderStudio();
+      this.renderDocument();
+    });
+  },
+
+  onRouteEnter: function(routeId) {
+    if (routeId === 'studio') {
+      this.renderStudio();
+      this.renderDocument();
+    } else if (routeId === 'client-portal') {
+      this.renderClientPortal();
+    } else if (routeId === 'clauses') {
+      this.renderClausesLibrary();
+    } else if (routeId === 'calculator') {
+      this.updateCalculatorResults();
+    }
+  },
+
+  // =========================================================================
+  // HERO INTERACTIVE RISK SANDBOX
+  // =========================================================================
+  sandboxState: {
+    unlimitedRevisions: true,
+    netTerms: '60',
+    exclusionsDefined: false,
+    ipShielded: false
+  },
+
+  bindHeroSandbox: function() {
+    const updateSandbox = () => {
+      let score = 25;
+      let leakage = '$11,400/yr';
+      let status = 'CRITICAL EXPOSURE';
+      let statusColor = 'var(--color-danger)';
+      let badgeClass = 'badge-danger';
+      let segmentClass = 'active-danger';
+
+      if (!this.sandboxState.unlimitedRevisions) score += 30;
+      if (this.sandboxState.netTerms === '7') score += 20;
+      if (this.sandboxState.exclusionsDefined) score += 15;
+      if (this.sandboxState.ipShielded) score += 25;
+
+      if (score >= 85) {
+        status = 'FORTIFIED & SHIELDED';
+        statusColor = 'var(--color-brand)';
+        badgeClass = 'badge-brand';
+        segmentClass = 'active-brand';
+        leakage = '$0 (Protected)';
+      } else if (score >= 60) {
+        status = 'MODERATE EXPOSURE';
+        statusColor = 'var(--color-warning)';
+        badgeClass = 'badge-warning';
+        segmentClass = 'active-warning';
+        leakage = '$4,200/yr';
+      }
+
+      const scoreEl = document.getElementById('sandbox-score');
+      const statusEl = document.getElementById('sandbox-status');
+      const leakageEl = document.getElementById('sandbox-leakage');
+
+      if (scoreEl) {
+        scoreEl.innerText = score;
+        scoreEl.style.color = statusColor;
+      }
+      if (statusEl) {
+        statusEl.innerHTML = `<span class="badge ${badgeClass}">${status}</span>`;
+      }
+      if (leakageEl) {
+        leakageEl.innerText = leakage;
+        leakageEl.style.color = statusColor;
+      }
+
+      // Update segment bars
+      const segContainer = document.getElementById('sandbox-segments');
+      if (segContainer) {
+        const activeCount = Math.round((score / 100) * 10);
+        segContainer.innerHTML = Array.from({ length: 10 }, (_, i) => `
+          <div class="segment-pill ${i < activeCount ? segmentClass : ''}"></div>
+        `).join('');
+      }
+    };
+
+    const chkRev = document.getElementById('sb-unlimited-rev');
+    const chkNet = document.getElementById('sb-net-terms');
+    const chkExcl = document.getElementById('sb-exclusions');
+    const chkIp = document.getElementById('sb-ip-shield');
+
+    if (chkRev) {
+      chkRev.addEventListener('change', (e) => {
+        this.sandboxState.unlimitedRevisions = e.target.checked;
+        updateSandbox();
+      });
+    }
+    if (chkNet) {
+      chkNet.addEventListener('change', (e) => {
+        this.sandboxState.netTerms = e.target.checked ? '7' : '60';
+        updateSandbox();
+      });
+    }
+    if (chkExcl) {
+      chkExcl.addEventListener('change', (e) => {
+        this.sandboxState.exclusionsDefined = e.target.checked;
+        updateSandbox();
+      });
+    }
+    if (chkIp) {
+      chkIp.addEventListener('change', (e) => {
+        this.sandboxState.ipShielded = e.target.checked;
+        updateSandbox();
+      });
+    }
+
+    updateSandbox();
+  },
+
+  // =========================================================================
+  // STUDIO WORKSTATION BINDINGS
+  // =========================================================================
+  bindStudioInputs: function() {
+    const bindText = (id, prop) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', (e) => {
+          window.ScopeLockState.updateProjectField(prop, e.target.value);
+        });
+      }
+    };
+
+    bindText('input-proj-name', 'projectName');
+    bindText('input-client-name', 'clientName');
+    bindText('input-client-email', 'clientEmail');
+    bindText('input-studio-name', 'studioName');
+    bindText('input-studio-email', 'studioEmail');
+    bindText('input-start-date', 'startDate');
+    bindText('input-end-date', 'endDate');
+    bindText('input-payment-terms', 'paymentTerms');
+
+    const numFee = document.getElementById('input-total-fee');
+    if (numFee) {
+      numFee.addEventListener('input', (e) => {
+        window.ScopeLockState.updateProjectField('totalFee', Number(e.target.value) || 0);
+      });
+    }
+
+    const numRate = document.getElementById('input-hourly-rate');
+    if (numRate) {
+      numRate.addEventListener('input', (e) => {
+        window.ScopeLockState.updateProjectField('hourlyRate', Number(e.target.value) || 150);
+      });
+    }
+
+    const selCurr = document.getElementById('select-currency');
+    if (selCurr) {
+      selCurr.addEventListener('change', (e) => {
+        const symbols = { USD: '$', EUR: '€', GBP: '£', INR: '₹', CAD: '$' };
+        const val = e.target.value;
+        window.ScopeLockState.updateProjectField('currency', val);
+        window.ScopeLockState.updateProjectField('symbol', symbols[val] || '$');
+      });
+    }
+  },
+
+  renderStudio: function() {
+    const project = window.ScopeLockState.project;
+
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el && document.activeElement !== el) el.value = val || '';
+    };
+
+    setVal('input-proj-name', project.projectName);
+    setVal('input-client-name', project.clientName);
+    setVal('input-client-email', project.clientEmail);
+    setVal('input-studio-name', project.studioName);
+    setVal('input-studio-email', project.studioEmail);
+    setVal('input-total-fee', project.totalFee);
+    setVal('input-hourly-rate', project.hourlyRate);
+    setVal('select-currency', project.currency);
+    setVal('input-start-date', project.startDate);
+    setVal('input-end-date', project.endDate);
+    setVal('input-payment-terms', project.paymentTerms);
+
+    this.renderDeliverablesTable();
+    this.renderMilestones();
+    this.renderClausesSelectors();
+    this.renderRiskAuditor();
+    this.renderChangeOrders();
+  },
+
+  // =========================================================================
+  // DELIVERABLES MATRIX (EDITABLE DATA TABLE)
+  // =========================================================================
+  renderDeliverablesTable: function() {
+    const container = document.getElementById('deliverables-matrix-tbody');
+    if (!container) return;
+
+    const deliverables = window.ScopeLockState.project.deliverables || [];
+    const symbol = window.ScopeLockState.project.symbol || '$';
+
+    if (deliverables.length === 0) {
+      container.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; padding: 28px; color: var(--text-muted);">
+            No deliverables defined. Click <strong>"+ Add Deliverable"</strong> or select an Industry Preset.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    let totalHours = 0;
+    let totalPrice = 0;
+
+    container.innerHTML = deliverables.map((del, idx) => {
+      const hours = Number(del.estimatedHours) || 0;
+      const price = Number(del.price) || 0;
+      totalHours += hours;
+      totalPrice += price;
+
+      return `
+        <tr data-del-id="${del.id}">
+          <td data-label="Deliverable" style="width: 22%;">
+            <input type="text" class="table-input" style="font-weight: 700;" value="${escapeHTML(del.title)}" placeholder="Deliverable Name" onchange="ScopeLockState.updateDeliverable('${del.id}', 'title', this.value)" />
+          </td>
+          <td data-label="Specifications" style="width: 30%;">
+            <input type="text" class="table-input" value="${escapeHTML(del.description)}" placeholder="Technical specifications & formats" onchange="ScopeLockState.updateDeliverable('${del.id}', 'description', this.value)" />
+          </td>
+          <td data-label="Revisions" style="width: 10%;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <input type="number" min="0" max="10" class="table-input" style="width: 48px; text-align: center;" value="${del.revisions}" onchange="ScopeLockState.updateDeliverable('${del.id}', 'revisions', Number(this.value))" />
+              <span style="font-size: 0.74rem; color: var(--text-muted);">rounds</span>
+            </div>
+          </td>
+          <td data-label="Review SLA" style="width: 10%;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <input type="number" min="1" max="30" class="table-input" style="width: 44px; text-align: center;" value="${del.slaDays}" onchange="ScopeLockState.updateDeliverable('${del.id}', 'slaDays', Number(this.value))" />
+              <span style="font-size: 0.74rem; color: var(--text-muted);">days</span>
+            </div>
+          </td>
+          <td data-label="Hours / Fee" style="width: 12%;">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span style="font-size: 0.75rem; color: var(--text-secondary);">${hours} hrs</span>
+              <span style="font-weight: 700; font-size: 0.82rem; color: var(--color-brand); font-family: var(--font-mono);">${symbol}${price.toLocaleString()}</span>
+            </div>
+          </td>
+          <td data-label="Exclusions" style="width: 24%;">
+            <input type="text" class="table-input" style="color: #fbbf24;" value="${escapeHTML(del.exclusions || '')}" placeholder="Out of scope (e.g. data migration)" onchange="ScopeLockState.updateDeliverable('${del.id}', 'exclusions', this.value)" />
+          </td>
+          <td data-label="Actions" style="text-align: right; width: 70px;">
+            <div style="display: inline-flex; gap: 4px;">
+              <button type="button" class="btn-icon" title="Duplicate Deliverable" onclick="ScopeLockState.duplicateDeliverable('${del.id}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button type="button" class="btn-icon danger" title="Delete Deliverable" onclick="ScopeLockState.deleteDeliverable('${del.id}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Update matrix summary bar if present
+    const summaryBar = document.getElementById('matrix-summary-stats');
+    if (summaryBar) {
+      summaryBar.innerHTML = `
+        <span><strong>${deliverables.length}</strong> Deliverable Items</span>
+        <span>•</span>
+        <span><strong>${totalHours}</strong> Total Professional Hours</span>
+        <span>•</span>
+        <span>Allocated Value: <strong>${symbol}${totalPrice.toLocaleString()}</strong></span>
+      `;
+    }
+  },
+
+  renderMilestones: function() {
+    const container = document.getElementById('milestones-container');
+    if (!container) return;
+
+    const project = window.ScopeLockState.project;
+    const totalFee = project.totalFee || 0;
+    const milestones = project.milestones || [];
+
+    container.innerHTML = milestones.map((m, idx) => {
+      const amount = Math.round((totalFee * (m.percentage / 100)));
+      return `
+        <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 6px;">
+          <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+            <span class="badge badge-neutral">Phase 0${idx + 1}</span>
+            <span style="font-weight: 650; font-size: 0.88rem;">${escapeHTML(m.name)}</span>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">${escapeHTML(m.trigger)}</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <span style="font-weight: 600; font-size: 0.86rem; color: var(--text-secondary);">${m.percentage}%</span>
+            <span style="font-weight: 750; font-size: 0.95rem; color: var(--text-primary); font-family: var(--font-mono);">${project.symbol || '$'}${amount.toLocaleString()}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  renderClausesSelectors: function() {
+    const container = document.getElementById('studio-clauses-list');
+    if (!container) return;
+
+    const selected = window.ScopeLockState.project.clauses || [];
+
+    container.innerHTML = window.ScopeLockClauses.map(clause => {
+      const isChecked = selected.includes(clause.id);
+      return `
+        <label style="display: flex; align-items: flex-start; gap: 10px; background: var(--bg-surface-elevated); border: 1px solid ${isChecked ? 'rgba(16, 185, 129, 0.4)' : 'var(--border-subtle)'}; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 6px; cursor: pointer; transition: border-color var(--transition-fast);">
+          <input type="checkbox" style="margin-top: 3px; accent-color: var(--color-brand);" ${isChecked ? 'checked' : ''} onchange="ScopeLockState.toggleClause('${clause.id}', this.checked)" />
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+              <span style="font-weight: 650; font-size: 0.88rem;">${escapeHTML(clause.title)}</span>
+              <span class="badge badge-neutral">${clause.category}</span>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-secondary);">${escapeHTML(clause.plainEnglish)}</div>
+          </div>
+        </label>
+      `;
+    }).join('');
+  },
+
+  // =========================================================================
+  // RISK AUDITOR WIDGET (SOPHISTICATED DASHBOARD + 1-CLICK FIXES)
+  // =========================================================================
+  renderRiskAuditor: function() {
+    const container = document.getElementById('risk-auditor-widget');
+    if (!container) return;
+
+    const project = window.ScopeLockState.project;
+    const audit = window.ScopeLockRiskEngine.audit(project);
+    const activeSegments = Math.round((audit.score / 100) * 10);
+    const segClass = audit.score >= 85 ? 'active-brand' : audit.score >= 65 ? 'active-warning' : 'active-danger';
+
+    container.innerHTML = `
+      <div class="risk-meter-box">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.74rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; font-weight: 750;">CONTRACT SECURITY RISK INDEX</div>
+            <div style="display: flex; align-items: baseline; gap: 4px; margin-top: 2px;">
+              <span class="risk-num" style="color: ${audit.scoreColor};">${audit.score}</span>
+              <span class="risk-max">/100</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge ${audit.statusClass}">${audit.category}</span>
+            <div style="font-size: 0.74rem; color: var(--text-muted); margin-top: 4px;">Dynamic Rules Engine</div>
+          </div>
+        </div>
+
+        <!-- Segmented Glow Meter -->
+        <div class="segmented-risk-bar">
+          ${Array.from({ length: 10 }, (_, i) => `
+            <div class="segment-pill ${i < activeSegments ? segClass : ''}"></div>
+          `).join('')}
+        </div>
+
+        <!-- Vulnerability Flags & 1-Click Legal Remedies -->
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          ${audit.checks.map(c => `
+            <div class="finding-row ${c.passed ? 'passed' : c.severity.toLowerCase()}">
+              <div style="display: flex; align-items: flex-start; gap: 8px; flex: 1;">
+                <span style="font-weight: 750; color: ${c.passed ? 'var(--color-brand)' : c.severity === 'CRITICAL' ? 'var(--color-danger)' : 'var(--color-warning)'}; margin-top: 1px;">
+                  ${c.passed ? '✓' : '⚠'}
+                </span>
+                <div>
+                  <div style="font-weight: 650; color: var(--text-primary); font-size: 0.84rem;">${escapeHTML(c.title)}</div>
+                  <div style="color: var(--text-secondary); margin-top: 2px; font-size: 0.78rem;">${escapeHTML(c.message)}</div>
+                </div>
+              </div>
+
+              ${!c.passed && c.fixAction ? `
+                <button type="button" class="btn btn-brand btn-sm" style="flex-shrink: 0; padding: 4px 8px; font-size: 0.74rem;" onclick="ScopeLockRiskEngine.applyFix('${c.fixAction}')">
+                  ⚡ Fix Now
+                </button>
+              ` : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  },
+
+  // =========================================================================
+  // CHANGE ORDERS (WITH 1-CLICK CLIENT PITCH COPY)
+  // =========================================================================
+  renderChangeOrders: function() {
+    const list = document.getElementById('change-orders-list');
+    if (!list) return;
+
+    const project = window.ScopeLockState.project;
+    const orders = project.changeOrders || [];
+
+    if (orders.length === 0) {
+      list.innerHTML = `<div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">No Change Orders issued. When a client requests additions, generate a formal addendum below.</div>`;
+      return;
+    }
+
+    list.innerHTML = orders.map(co => `
+      <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <div>
+            <span class="badge badge-brand">${co.id}</span>
+            <span style="font-weight: 700; font-size: 0.95rem; margin-left: 6px;">${escapeHTML(co.title)}</span>
+          </div>
+          <span style="font-weight: 800; font-size: 1.1rem; color: var(--color-brand); font-family: var(--font-mono);">${project.symbol || '$'}${co.totalCost.toLocaleString()}</span>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px;">${escapeHTML(co.reason)}</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted);">
+          <span>+${co.additionalHours} Hours | +${co.additionalDays} Days (New Target: ${co.newDeadline})</span>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="ScopeLockUI.copyChangeOrderPitch('${co.id}')" title="Copy respectful scope-protection message for Slack/email">
+              📋 Copy Client Pitch
+            </button>
+            <span class="badge badge-warning">${co.status}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  copyChangeOrderPitch: function(coId) {
+    const project = window.ScopeLockState.project;
+    const co = (project.changeOrders || []).find(c => c.id === coId);
+    if (!co) return;
+
+    const symbol = project.symbol || '$';
+    const pitch = `Hi ${project.clientName || 'there'},\n\nWe would be excited to build "${co.title}"! Since this feature is outside our agreed Statement of Work deliverable matrix, here is our formal Change Order addendum (#${co.id}):\n\n• Estimated Additional Effort: ${co.additionalHours} hours\n• Additional Investment: ${symbol}${co.totalCost.toLocaleString()} (${project.currency || 'USD'})\n• Delivery Schedule Impact: +${co.additionalDays} business days (Revised completion target: ${co.newDeadline})\n\nPlease reply with approval so our team can schedule this without delaying our primary milestone deliverables.\n\nBest regards,\n${project.studioName || 'Your Project Team'}`;
+
+    navigator.clipboard.writeText(pitch).then(() => {
+      this.showToast('Copied professional Change-Order pitch to clipboard!', 'success');
+    }).catch(() => {
+      this.showToast('Clipboard copy unavailable', 'warning');
+    });
+  },
+
+  // =========================================================================
+  // LIVE DOCUMENT PREVIEW
+  // =========================================================================
+  renderDocument: function() {
+    const container = document.getElementById('document-preview-container');
+    if (!container) return;
+
+    const project = window.ScopeLockState.project;
+    container.innerHTML = window.ScopeLockDocument.renderHTML(project);
+  },
+
+  // =========================================================================
+  // LEAKAGE ROI CALCULATOR
+  // =========================================================================
+  bindCalculator: function() {
+    ['calc-project-val', 'calc-projects-year', 'calc-included-rev', 'calc-actual-rev', 'calc-hours-rev', 'calc-hourly-rate'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => this.updateCalculatorResults());
+      }
+    });
+  },
+
+  updateCalculatorResults: function() {
+    const getVal = (id, fallback) => {
+      const el = document.getElementById(id);
+      return el ? Number(el.value) || fallback : fallback;
+    };
+
+    const projectValue = getVal('calc-project-val', 7000);
+    const projectsPerYear = getVal('calc-projects-year', 8);
+    const includedRevisions = getVal('calc-included-rev', 2);
+    const actualRevisions = getVal('calc-actual-rev', 5);
+    const avgHoursPerRevision = getVal('calc-hours-rev', 4);
+    const hourlyRate = getVal('calc-hourly-rate', 140);
+
+    const setLabel = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = txt;
+    };
+
+    setLabel('display-val-project', `$${projectValue.toLocaleString()}`);
+    setLabel('display-val-projects', `${projectsPerYear} projects`);
+    setLabel('display-val-included', `${includedRevisions} rounds`);
+    setLabel('display-val-actual', `${actualRevisions} rounds`);
+    setLabel('display-val-hours', `${avgHoursPerRevision} hrs/round`);
+    setLabel('display-val-rate', `$${hourlyRate}/hr`);
+
+    const result = window.ScopeLockCalc.calculateLeakage({
+      projectValue,
+      projectsPerYear,
+      includedRevisions,
+      actualRevisions,
+      avgHoursPerRevision,
+      hourlyRate
+    });
+
+    const elLeakage = document.getElementById('calc-res-leakage');
+    const elHours = document.getElementById('calc-res-hours');
+    const elMargin = document.getElementById('calc-res-margin');
+    const elRecovered = document.getElementById('calc-res-recovered');
+
+    if (elLeakage) elLeakage.innerText = `$${result.annualRevenueLeakage.toLocaleString()}`;
+    if (elHours) elHours.innerText = `${result.annualUnbilledHours} hrs/yr`;
+    if (elMargin) elMargin.innerText = `${result.marginLossPercent}%`;
+    if (elRecovered) elRecovered.innerText = `$${result.potentialRecoveredRevenue.toLocaleString()}`;
+  },
+
+  // =========================================================================
+  // CLAUSE LIBRARY SEARCH & FILTER
+  // =========================================================================
+  bindClauseSearch: function() {
+    const searchInput = document.getElementById('clause-search-input');
+    const filterSelect = document.getElementById('clause-cat-filter');
+
+    const update = () => {
+      const q = (searchInput?.value || '').toLowerCase().trim();
+      const cat = filterSelect?.value || 'ALL';
+      this.renderClausesLibrary(q, cat);
+    };
+
+    if (searchInput) searchInput.addEventListener('input', update);
+    if (filterSelect) filterSelect.addEventListener('change', update);
+  },
+
+  renderClausesLibrary: function(query = '', category = 'ALL') {
+    const container = document.getElementById('clauses-library-grid');
+    if (!container) return;
+
+    let clauses = window.ScopeLockClauses;
+
+    if (category !== 'ALL') {
+      clauses = clauses.filter(c => c.category === category);
+    }
+    if (query) {
+      clauses = clauses.filter(c => c.title.toLowerCase().includes(query) || c.plainEnglish.toLowerCase().includes(query) || c.riskMitigated.toLowerCase().includes(query));
+    }
+
+    if (clauses.length === 0) {
+      container.innerHTML = `<div style="text-align: center; padding: 32px; color: var(--text-muted); grid-column: 1/-1;">No clauses found matching your search.</div>`;
+      return;
+    }
+
+    container.innerHTML = clauses.map(c => `
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="badge badge-brand">${c.category}</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Drafting Aid</span>
+          </div>
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px;">${escapeHTML(c.title)}</h3>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 12px;">
+            <strong>Plain English:</strong> ${escapeHTML(c.plainEnglish)}
+          </p>
+          <div style="background: #0d0f15; border: 1px solid var(--border-subtle); padding: 10px; border-radius: var(--radius-xs); font-size: 0.78rem; color: #94a3b8; font-family: var(--font-mono); max-height: 100px; overflow-y: auto; margin-bottom: 12px;">
+            ${escapeHTML(c.contractLanguage)}
+          </div>
+          <div style="font-size: 0.78rem; color: #fbbf24; background: rgba(245, 158, 11, 0.08); padding: 6px 10px; border-radius: var(--radius-xs); margin-bottom: 14px;">
+            ⚠ <strong>Eliminates Trap:</strong> ${escapeHTML(c.riskMitigated)}
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" style="width: 100%;" onclick="ScopeLockState.toggleClause('${c.id}', true); ScopeLockUI.showToast('Appended to active SOW'); ScopeLockRouter.navigate('studio');">
+          + Add to Active Statement of Work
+        </button>
+      </div>
+    `).join('');
+  },
+
+  // =========================================================================
+  // CLIENT SIGN-OFF PORTAL
+  // =========================================================================
+  renderClientPortal: function() {
+    const container = document.getElementById('client-portal-card-body');
+    if (!container) return;
+
+    const project = window.ScopeLockState.project;
+    const deliverables = project.deliverables || [];
+    const signoff = window.ScopeLockState.state.clientSignoff;
+
+    container.innerHTML = `
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <span class="badge badge-brand">Client Verification Mode</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Simulated Client View</span>
+        </div>
+
+        <h2 style="font-size: 1.8rem; margin-bottom: 6px;">Deliverable Acceptance & Electronic Execution</h2>
+        <p style="font-size: 0.92rem; margin-bottom: 24px;">
+          Review the project specifications, acknowledge the explicit boundaries, and confirm commencement for <strong>${escapeHTML(project.projectName)}</strong>.
+        </p>
+
+        <!-- Acceptance Checkboxes -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 10px;">Itemized Scope Verification</h3>
+          ${deliverables.map((d, i) => `
+            <label style="display: flex; align-items: flex-start; gap: 12px; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 8px; cursor: pointer;">
+              <input type="checkbox" id="client-check-${d.id}" style="margin-top: 4px; accent-color: var(--color-brand);" ${signoff.acceptedDeliverables[d.id] ? 'checked' : ''} onchange="ScopeLockUI.toggleClientCheck('${d.id}', this.checked)" />
+              <div>
+                <div style="font-weight: 700; font-size: 0.92rem;">${i+1}. ${escapeHTML(d.title)}</div>
+                <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px;">${escapeHTML(d.description)}</div>
+                <div style="font-size: 0.78rem; color: #fbbf24; margin-top: 4px;">
+                  <strong>Out of Scope:</strong> ${escapeHTML(d.exclusions || 'None defined')}
+                </div>
+              </div>
+            </label>
+          `).join('')}
+        </div>
+
+        <!-- Electronic Signature Box -->
+        <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-medium); border-radius: var(--radius-md); padding: 20px;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 12px;">Electronic Sign-Off & Authorization</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="portal-input-name">Signer Full Legal Name</label>
+              <input type="text" id="portal-input-name" class="form-control" value="${escapeHTML(signoff.signerName || project.clientName || '')}" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="portal-input-email">Signer Corporate Email</label>
+              <input type="email" id="portal-input-email" class="form-control" value="${escapeHTML(signoff.signerEmail || project.clientEmail || '')}" />
+            </div>
+          </div>
+
+          <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 18px; cursor: pointer;">
+            <input type="checkbox" id="portal-confirm-ack" ${signoff.confirmed ? 'checked' : ''} style="margin-top: 3px; accent-color: var(--color-brand);" />
+            <span>I confirm that I have authority to bind this entity. I agree to the milestone payment schedule, revision limits, and acknowledge that out-of-scope modifications require an executed Change Order.</span>
+          </label>
+
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <button type="button" class="btn btn-primary" onclick="ScopeLockUI.submitClientSignoff()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Confirm Digital Sign-Off
+            </button>
+            ${signoff.signedAt ? `
+              <span class="badge badge-brand">
+                Executed on ${new Date(signoff.signedAt).toLocaleString()}
+              </span>
+            ` : ''}
+          </div>
+
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 14px; text-align: center;">
+            Electronic acknowledgement prototype for demo and verification purposes.
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  toggleClientCheck: function(id, checked) {
+    const signoff = window.ScopeLockState.state.clientSignoff;
+    signoff.acceptedDeliverables[id] = checked;
+  },
+
+  submitClientSignoff: function() {
+    const nameInput = document.getElementById('portal-input-name');
+    const emailInput = document.getElementById('portal-input-email');
+    const ackInput = document.getElementById('portal-confirm-ack');
+
+    if (!nameInput || !nameInput.value.trim()) {
+      this.showToast('Please provide your full legal name', 'danger');
+      return;
+    }
+    if (!ackInput || !ackInput.checked) {
+      this.showToast('Please confirm the agreement checkbox', 'warning');
+      return;
+    }
+
+    window.ScopeLockState.signAgreement({
+      signerName: nameInput.value.trim(),
+      signerEmail: emailInput ? emailInput.value.trim() : ''
+    });
+
+    this.showToast('Document executed with digital timestamp audit', 'success');
+    this.renderClientPortal();
+  },
+
+  // =========================================================================
+  // TOAST NOTIFICATIONS
+  // =========================================================================
+  showToast: function(message, type = 'info') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+      <div class="toast-indicator"></div>
+      <div>${escapeHTML(message)}</div>
+    `;
+
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('visible'), 10);
+
+    setTimeout(() => {
+      toast.classList.remove('visible');
+      setTimeout(() => toast.remove(), 250);
+    }, 3500);
+  },
+
+  renderAll: function() {
+    this.renderStudio();
+    this.renderDocument();
+    this.updateCalculatorResults();
+    this.renderClausesLibrary();
+  }
+};
+
+// --- js/app.js ---
+/**
+ * ScopeLock Master Application Orchestrator
+ * Bootstraps modules, configures DOM delegations, and verifies application lifecycle.
+ */
+
+(function() {
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize State and Local Storage
+    window.ScopeLockState.init();
+
+    // 2. Initialize UI Components
+    window.ScopeLockUI.init();
+
+    // 3. Initialize View Router
+    window.ScopeLockRouter.init();
+
+    // 4. Bind Global Navigation Actions
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = link.dataset.tab;
+        if (tab) window.ScopeLockRouter.navigate(tab);
+      });
+    });
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.getElementById('nav-menu');
+    if (mobileBtn && navMenu) {
+      mobileBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+      });
+    }
+
+    // 5. Preset Chip Selection Listeners
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const presetId = btn.dataset.preset;
+        if (presetId) {
+          window.ScopeLockState.loadPreset(presetId);
+          document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          window.ScopeLockUI.showToast(`Loaded "${btn.innerText.trim()}" preset`);
+        }
+      });
+    });
+
+    // 6. Change Order Submission
+    const coForm = document.getElementById('co-create-form');
+    if (coForm) {
+      coForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('co-input-title')?.value.trim();
+        const reason = document.getElementById('co-input-reason')?.value.trim();
+        const hours = Number(document.getElementById('co-input-hours')?.value) || 0;
+        const days = Number(document.getElementById('co-input-days')?.value) || 0;
+        const rate = Number(document.getElementById('co-input-rate')?.value) || (window.ScopeLockState.project.hourlyRate || 150);
+
+        if (!title) {
+          window.ScopeLockUI.showToast('Please provide a title for the Change Order', 'warning');
+          return;
+        }
+
+        const co = window.ScopeLockState.addChangeOrder({
+          title,
+          reason,
+          additionalHours: hours,
+          additionalDays: days,
+          hourlyRate: rate
+        });
+
+        // Reset form inputs
+        document.getElementById('co-input-title').value = '';
+        document.getElementById('co-input-reason').value = '';
+
+        window.ScopeLockUI.showToast(`Change Order ${co.id} issued (+${window.ScopeLockState.project.symbol || '$'}${co.totalCost.toLocaleString()})`, 'success');
+        window.ScopeLockUI.renderChangeOrders();
+      });
+    }
+
+    // 7. Add Deliverable Action
+    const addDelBtn = document.getElementById('btn-add-deliverable');
+    if (addDelBtn) {
+      addDelBtn.addEventListener('click', () => {
+        window.ScopeLockState.addDeliverable();
+        window.ScopeLockUI.showToast('New deliverable line item added');
+      });
+    }
+
+    // 8. Document Print & Markdown Export
+    const printBtn = document.getElementById('btn-print-doc');
+    if (printBtn) {
+      printBtn.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    const copyMdBtn = document.getElementById('btn-copy-md');
+    if (copyMdBtn) {
+      copyMdBtn.addEventListener('click', () => {
+        const md = window.ScopeLockDocument.toMarkdown(window.ScopeLockState.project);
+        navigator.clipboard.writeText(md).then(() => {
+          window.ScopeLockUI.showToast('Statement of Work copied to clipboard as Markdown');
+        }).catch(() => {
+          window.ScopeLockUI.showToast('Clipboard access unavailable', 'warning');
+        });
+      });
+    }
+
+    // 9. JSON Export & Import
+    const exportBtn = document.getElementById('btn-export-json');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        window.ScopeLockStorage.exportJSON(window.ScopeLockState.project);
+        window.ScopeLockUI.showToast('Project JSON exported');
+      });
+    }
+
+    const importInput = document.getElementById('input-import-json');
+    if (importInput) {
+      importInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        window.ScopeLockStorage.importJSON(file, (err, data) => {
+          if (err) {
+            window.ScopeLockUI.showToast('Failed to parse project JSON file', 'danger');
+          } else {
+            window.ScopeLockStorage.save(data);
+            window.ScopeLockState.init();
+            window.ScopeLockUI.renderAll();
+            window.ScopeLockUI.showToast('Project restored from JSON backup', 'success');
+          }
+          importInput.value = '';
+        });
+      });
+    }
+
+    console.log('ScopeLock Production Engine initialized successfully.');
+  });
+})();
+
+</script>
+</body>
+</html>
